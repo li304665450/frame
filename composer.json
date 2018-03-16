@@ -1,0 +1,23 @@
+{
+    "name": "marsli/simple-framework",
+    "description": "A simple php framework",
+    "type": "project",
+    "license": "MIT", 
+    "authors": [ 
+        { 
+            "name": "marsli", 
+            "email": "304665450@qq.com" 
+        } 
+    ], 
+    "require": {
+        "filp/whoops": "~1.0",
+        "monolog/monolog": "1.0.*",
+        "swiftmailer/swiftmailer": "~5.3"
+    },
+    "autoload": { 
+        "psr-4": { 
+            "sf\\": "src/", 
+            "app\\": "app/"
+        } 
+    }
+}

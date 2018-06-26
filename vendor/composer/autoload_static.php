@@ -11,9 +11,9 @@ class ComposerStaticInitc0b6e7822ed756795f87709df0e4f2b6
     );
 
     public static $prefixLengthsPsr4 = array (
-        's' => 
+        'm' => 
         array (
-            'sf\\' => 3,
+            'mars\\' => 5,
         ),
         'a' => 
         array (
@@ -22,9 +22,9 @@ class ComposerStaticInitc0b6e7822ed756795f87709df0e4f2b6
     );
 
     public static $prefixDirsPsr4 = array (
-        'sf\\' => 
+        'mars\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/marsphp/mars',
         ),
         'app\\' => 
         array (

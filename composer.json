@@ -16,7 +16,7 @@
     },
     "autoload": { 
         "psr-4": { 
-            "sf\\": "src/", 
+            "mars\\": "marsphp/mars/",
             "app\\": "app/"
         } 
     }

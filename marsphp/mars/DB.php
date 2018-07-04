@@ -110,9 +110,7 @@ class DB
     }
 
     /**
-     * sql执行方法
-     * 处理select查询语句
-     * 支持预处理;
+     * 处理select查询语句的查询结果集
      * @param $sql 语句
      * @param array $param 参数
      * @return mixed 查询语句返回内容，其他返回影响行数

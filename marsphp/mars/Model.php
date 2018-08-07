@@ -23,9 +23,9 @@ class Model
     {
         $prefix = config('database.'.$this->database)['prefix'];
         $path_arr = explode('\\',get_called_class());
-        $className = strtolower(end($path_arr));
-        $this->table = $prefix.$className;
-        $this->db = DB::getInstance($this->database,$this->otherDB);
+        $modelName = strtolower(end($path_arr));
+        $this->table = $prefix.$modelName;
+        $this->db = new DB($this->database,$this->otherDB);
     }
 
     /**

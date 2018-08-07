@@ -17,16 +17,16 @@ class DB
     private $dbh = '';                  //数据连接对象
     private $query = '';                //当前sql语句执行结果
 
-    //静态变量保存全局实例
-    private static $_instance = null;
-
-    //静态方法，单例统一访问入口
-    public static function getInstance($database = '', $otherDB = '') {
-        if (!self::$_instance instanceof self) {
-            self::$_instance = new self ($database, $otherDB);
-        }
-        return self::$_instance;
-    }
+//    //静态变量保存全局实例
+////    private static $_instance = null;
+////
+////    //静态方法，单例统一访问入口
+////    public static function getInstance($database = '', $otherDB = '') {
+////        if (!self::$_instance instanceof self) {
+////            self::$_instance = new self ($database, $otherDB);
+////        }
+////        return self::$_instance;
+////    }
 
     /**
      * DB constructor.
@@ -109,12 +109,6 @@ class DB
         return $this->dbh->lastInsertId();
     }
 
-    /**
-     * 处理select查询语句的查询结果集
-     * @param $sql 语句
-     * @param array $param 参数
-     * @return mixed 查询语句返回内容，其他返回影响行数
-     */
     /**
      * 处理select查询语句
      * 产生的结果集

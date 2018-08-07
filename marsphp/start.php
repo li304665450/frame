@@ -9,13 +9,6 @@
 //加载助手函数
 require_once __DIR__ . '/function.php';
 
-////加载load目录中所有加载项
-//$file = require_dir(__DIR__.'/load');
-//
-//foreach ($file as $value){
-//    require_once $value;
-//}
-
 //加载配置信息
 require_once __DIR__ . '/load/loadConfig.php';
 

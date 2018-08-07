@@ -10,8 +10,9 @@ namespace app\index\controller;
 
 
 use mars\DB;
+use mars\Model;
 
-class Index
+class Index extends Model
 {
     public function index(){
         echo 'Welcome to MarsPhp!';

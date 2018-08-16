@@ -8,8 +8,7 @@
 
 namespace app\index\model;
 
-
-use mars\Model;
+use mars\DB\Model;
 
 class Test extends Model
 {

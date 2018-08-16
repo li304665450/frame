@@ -6,36 +6,25 @@
  * Time: 下午3:58
  */
 
-namespace mars;
+namespace mars\DB;
 
 
 class DB
 {
-    private $database = 'default';      //数据库配置，默认为default
+    private $database = '';             //数据库配置
     private $otherDB = '';              //若需当前连接该地址下其他库，填写库名
     private $dsn = '';                  //数据库连接凭据
     private $dbh = '';                  //数据连接对象
     private $query = '';                //当前sql语句执行结果
 
-//    //静态变量保存全局实例
-////    private static $_instance = null;
-////
-////    //静态方法，单例统一访问入口
-////    public static function getInstance($database = '', $otherDB = '') {
-////        if (!self::$_instance instanceof self) {
-////            self::$_instance = new self ($database, $otherDB);
-////        }
-////        return self::$_instance;
-////    }
-
     /**
      * DB constructor.
-     * @param string $database 数据库配置，默认为default
+     * @param string $database 数据库配置
      * @param string $otherDB  若需连接该地址下其他库，填写库名
      */
     function __construct($database, $otherDB)
     {
-        !empty($database) && $this->database = $database;
+        $this->database = $database;
         $config = config('database.'.$this->database);
         !empty($otherDB) && $config['dbName'] = $otherDB && $this->otherDB = $otherDB;
         $this->dsn=$config['dbms'].":host=".$config['host'].";dbname=".$config['dbName'];

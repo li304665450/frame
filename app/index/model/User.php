@@ -8,8 +8,6 @@
 
 namespace app\index\model;
 
-
-
 use mars\Model;
 
 class User extends Model

@@ -64,3 +64,15 @@ function model($model,$group = null){
 
     return $result;
 }
+
+// 打印出错信息
+function debug()
+{
+    $argList = func_get_args();
+    foreach ( $argList as $value )
+    {
+        echo "<pre>";
+        print_r( $value );
+        echo "</pre>";
+    }
+}

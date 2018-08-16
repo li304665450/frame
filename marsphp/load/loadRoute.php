@@ -7,7 +7,7 @@
  */
 
 //路由处理模块
-$route = $_SERVER['PATH_INFO'] ?? '/index/index/index';
+$route = $_SERVER['PATH_INFO'] ?: '/index/index/index';
 $param = explode('/', $route);
 $group = $param[1];
 $controller = ucfirst($param[2]);

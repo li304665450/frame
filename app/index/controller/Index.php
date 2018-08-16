@@ -8,11 +8,10 @@
 
 namespace app\index\controller;
 
+use mars\DB\driveModel;
+use mars\DB\Query;
 
-use mars\DB;
-use mars\Model;
-
-class Index extends Model
+class Index
 {
     public function index(){
         echo 'Welcome to MarsPhp!';
@@ -41,10 +40,12 @@ class Index extends Model
 //        }
 //        $user = model('User');
 //        var_dump($user->insert(['name' => 'Jack33','age' => 11]));
-        $test = model('Test');
-        $where = ['name' => 'Jack','age' => 44];
-        $order = ['id'=>'desc','age'=>'desc'];
-        $limit = [0,3];
+        $start = time();
+        for ($i = 0; $i < 10000; $i++) {
+            $test = model('Test');
+            $where = ['name' => 'Jack', 'age' => 44];
+            $order = ['id' => 'desc', 'age' => 'desc'];
+            $limit = [0, 3];
 //        $id = $test->insert(['name' => 'Mark','age' => 24]);
 //        var_dump($id);
 //        $result = $test->update(['id'=>13],['name'=>'Sandy','age'=>17]);
@@ -52,9 +53,32 @@ class Index extends Model
 //        $result = $test->delete(['id'=>20,'name'=>'Sandy']);
 //        var_dump($result);
 //        var_dump($test->getLastSql());
-        $result = $test->get($where);
+            $result = $test->get($where);
+        }
+        $end = time();
+        deBug($end - $start);
+//        echo json_encode($result);
+//        var_dump($test->getLastSql());
+    }
+
+    public function test2(){
+        $cc = new driveModel('ims_test','default');
+        $where = ['name' => 'Jack','age' => 44];
+        $result = $cc->get($where);
         var_dump($result);
-        var_dump($test->getLastSql());
+    }
+    
+    public function test3(){
+        $query = new Query('ims_test');
+        $query->get([
+            'name' => 'Jack',
+            'age' => 44,
+            '_order' => 'id DESC'
+        ]);
+        echo $query->outSql;
+        echo $query->doSql;
+        debug($query->sqlParam);
+
     }
 
 }

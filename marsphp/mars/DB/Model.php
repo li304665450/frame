@@ -6,7 +6,7 @@
  * Time: 下午3:20
  */
 
-namespace mars;
+namespace mars\DB;
 
 
 class Model
@@ -54,6 +54,8 @@ class Model
      */
     public function get($condition = '',$order = '',$limit = ''){
 
+
+
         $sql = 'SELECT '.$this->field.' FROM '.$this->table;
 
         if (empty($condition)) return $this->db->query($sql) ? $this->db->getFetch() : null;
@@ -64,7 +66,7 @@ class Model
 
             $where = $this->splitCondition($condition,' AND ');
             $param = array_merge($param,$where['param']);
-
+            
             $order_str = empty($order) ? '' : ' ORDER BY '.$this->splitCondition($order,',',' ')['out_sql'];
 
             $limit_str = empty($limit) ? '' : ' LIMIT '.implode(',',$limit);

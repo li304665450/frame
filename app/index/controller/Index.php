@@ -9,7 +9,7 @@
 namespace app\index\controller;
 
 use mars\DB\driveModel;
-use mars\DB\Query;
+use mars\DB\Sql;
 
 class Index
 {
@@ -69,16 +69,24 @@ class Index
     }
     
     public function test3(){
-        $query = new Query('ims_test');
-        $query->get([
-            'name' => 'Jack',
-            'age' => 44,
-            '_order' => 'id DESC'
-        ]);
-        echo $query->outSql;
-        echo $query->doSql;
+
+        $query = new Sql('ims_test');
+
+//        debug($query);
+//        die();
+
+//        $query->select([
+//            'name' => 'Jack',
+//            'age' => 44,
+//            '_ext' => ['day > 2018-08-30','mm != 3'],
+//        ]);
+        $query->select(2);
+        debug( $query->outSql );
+        debug($query->doSql);
         debug($query->sqlParam);
 
     }
+
+
 
 }

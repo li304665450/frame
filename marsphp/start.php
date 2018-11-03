@@ -13,7 +13,7 @@ require_once __DIR__ . '/function.php';
 require_once __DIR__ . '/load/loadConfig.php';
 
 //加载默认加载模块
-require_once __DIR__ . '/load/loadModule.php';
+//require_once __DIR__ . '/load/loadModule.php';
 
 //加载路由模块
 require_once __DIR__ . '/load/loadRoute.php';

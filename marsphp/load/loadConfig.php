@@ -6,7 +6,7 @@
  * Time: 上午10:45
  */
 
-$file = require_dir(__DIR__.'/../../config');
+$file = require_dir(CONF_PATH);
 
 foreach ($file as $k => $v){
     if ($k == 'config'){
@@ -16,7 +16,7 @@ foreach ($file as $k => $v){
     }
 }
 
-$GLOBALS['config'] = array_merge($config_default,$config_extend);
+$config = array_merge($config_default,$config_extend);
 
 $config_default = null;
 $config_extend  = null;

@@ -8,7 +8,7 @@
 
 /**
  * 获取目录下所有文件名
- * @param $dir 目录路径
+ * @param dir 目录路径
  * @return array 包含所有文件名的数组
  */
 function require_dir($dir){
@@ -30,12 +30,13 @@ function require_dir($dir){
 
 /**
  * 获取配置信息
- * @param $name 配置名以点间隔
+ * @param name 配置名以点间隔
  * @return mixed 配置信息数组
  */
 function config($name = null){
 
     $config = $GLOBALS['config'];
+
     if (!empty($name)){
        $arr = explode('.',$name);
 
@@ -49,12 +50,12 @@ function config($name = null){
 
 /**
  * 模型类助手函数
- * @param $model 模型类类名
- * @param null $group 分组名，默认当前分组
+ * @param model 模型类类名
+ * @param null group 分组名，默认当前分组
  * @return null 模型类实例
  */
 function model($model,$group = null){
-    $group = empty($group) ? $GLOBALS['mars']['group'] : $group;
+    $group = empty($group) ? $GLOBALS['group'] : $group;
     $result = null;
     if (!empty($model)){
             $modelName = 'app\\'.$group.'\\model\\' . $model;

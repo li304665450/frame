@@ -9,7 +9,7 @@
 namespace mars\DB;
 
 
-class Query
+class Sql
 {
 
     public $doSql;
@@ -26,9 +26,9 @@ class Query
      * 数据获取方法
      * @param string $condition 筛选条件，数字为limit取几条，数组为筛选条件
      */
-    public function get($condition = ''){
+    public function select($condition = ''){
 
-        $select = $condition['_select'] ?? '*';
+        $select = $condition['_select'] ?: '*';
 
         $sql = 'SELECT '.$select.' FROM '.$this->table;
 
@@ -36,23 +36,24 @@ class Query
 
         if (is_array($condition) && !empty($condition)){
 
-            $group_str = empty($condition['_group']) ? '' : ' GROUP BY '.$condition['_group'];
+            $group_str = $condition['_group'] ?: ' GROUP BY '.$condition['_group'];
 
-            $order_str = empty($condition['_order']) ? '' : ' ORDER BY '.$condition['_order'];
+            $order_str = $condition['_order'] ?: ' ORDER BY '.$condition['_order'];
 
-            $limit_str = empty($condition['_limit']) ? '' : ' LIMIT '.$condition['_limit'];
+            $limit_str = $condition['_limit'] ?: ' LIMIT '.$condition['_limit'];
 
             $where = $this->splitCondition($condition,' AND ');
 
-            $this->sqlParam = $where['param'];
+            $ext = $this->splitExt($condition['_ext'] ?: '');
 
-            $this->outSql = $sql.' WHERE '.$where['out_sql'].$group_str.$order_str.$limit_str;
-            $this->doSql = $sql.' WHERE '.$where['sql'].$group_str.$order_str.$limit_str;
+            $this->sqlParam = array_merge($where['param'],$ext['param']);
+
+            $this->outSql = $sql.' WHERE '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
+            $this->doSql = $sql.' WHERE '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
             
         }elseif (is_int($condition)){
-            
-            $this->outSql = $sql.' LIMIT '.$condition;
-            $this->doSql .= ' LIMIT '.$condition;
+
+            $this->doSql = $this->outSql = $sql.' LIMIT '.$condition;
 
         }
 
@@ -64,7 +65,7 @@ class Query
      * @return null
      */
     public function insert($data){
-        
+
         if(count($data) < 1) return null;
 
         $sql = "INSERT INTO ".$this->table;
@@ -86,7 +87,7 @@ class Query
         $this->outSql = $sql.' '.$front_str.' VALUES '.$out_after_str;
         $this->doSql = $sql.' '.$front_str.' VALUES '.$after_str;
         $this->sqlParam = $param;
-        
+
     }
 
     /**
@@ -96,7 +97,7 @@ class Query
      * @return mixed|null 影响行数
      */
     public function update($condition,$data){
-        
+
         if(count($condition) < 1 || count($data) < 1) return null;
 
         $sql = "UPDATE ".$this->table.' SET';
@@ -118,7 +119,7 @@ class Query
      * @return mixed|null 影响行数
      */
     public function delete($condition){
-        
+
         if(count($condition) < 1) return null;
 
         $sql = 'DELETE FROM '.$this->table.' WHERE ';
@@ -160,6 +161,29 @@ class Query
         $result['param'] = $param;
         return $result;
 
+    }
+
+    /**
+     * @param $ext
+     * @return array
+     */
+    private function splitExt($ext){
+        $result = [
+            'out_sql'   => '',
+            'sql'    => '',
+            'param' => []
+        ];
+
+        if (!is_array($ext))
+            return $result;
+
+        foreach ($ext as $value){
+            list($k,$gull,$v) = explode(' ',$value);
+            $result['out_sql']  .= " AND $value";
+            $result['sql'] .= " AND $k $gull :$k";
+            $result['param'][":$k"] = $v;
+        }
+        return $result;
     }
 
 }

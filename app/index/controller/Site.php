@@ -7,7 +7,9 @@
  */
 namespace app\index\controller;
 
-class Site
+use mars\Controller;
+
+class Site extends Controller
 {
 
     public function action(){
@@ -17,6 +19,19 @@ class Site
     public function view()
     {
         $body = 'this is admin information';
-        require '/../view/site/view.php';
+//        echo __DIR__;
+        require __DIR__.'/../view/site/view.php';
+    }
+
+    public function test(){
+        $tpl['content'] = 'Hello Mars';
+        $tpl['age'] = 333;
+        $tpl['arr1'] = [
+            ['text' => '111'],
+            ['text' => '222']
+        ];
+
+        $this->display($tpl);
+
     }
 }

@@ -17,6 +17,7 @@ class Model
     public $table = '';            //表名
     public $sql = '';              //最后一次操作的sql语句
     public $db = '';               //DB操作对象
+    public $query = '';
     public $field = '*';           //查询字段，默认所有字段
 
     public function __construct()
@@ -52,7 +53,7 @@ class Model
      * @param string $limit 分页条件
      * @return array|null 结果集
      */
-    public function get($condition = '',$order = '',$limit = ''){
+    public function get($condition = '',$limit = '',$condExt = '', $order = '',$select =''){
 
 
 

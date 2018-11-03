@@ -10,15 +10,9 @@
 $route = $_SERVER['PATH_INFO'] ?: '/index/index/index';
 $param = explode('/', $route);
 $group = $param[1];
-$controller = ucfirst($param[2]);
+$controller = $param[2];
 $action = $param[3];
-$GLOBALS['mars']['group'] = $group;
-$controllerName = 'app\\'.$group.'\\controller\\' . $controller;
-$result = call_user_func_array(array($controllerName, $action),$_GET);
-//返回值为字符串，渲染view页面
-if (is_array($result)){
-    foreach ($result['assign'] as $k=>$v){
-        $$k = $v;
-    }
-    require '../app/'.$group.'/view/'.$controller.'/'.$result['view'].'.php';
-}
+$controllerName = 'app\\'.$group.'\\controller\\' . ucfirst($controller);
+
+$controll = new $controllerName();
+$controll->$action();

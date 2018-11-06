@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'mars\\' => array($baseDir . '/marsphp/mars'),
+    'lib\\' => array($baseDir . '/marsphp/lib'),
     'app\\' => array($baseDir . '/app'),
 );

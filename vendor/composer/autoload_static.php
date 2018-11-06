@@ -15,6 +15,10 @@ class ComposerStaticInitc0b6e7822ed756795f87709df0e4f2b6
         array (
             'mars\\' => 5,
         ),
+        'l' => 
+        array (
+            'lib\\' => 4,
+        ),
         'a' => 
         array (
             'app\\' => 4,
@@ -25,6 +29,10 @@ class ComposerStaticInitc0b6e7822ed756795f87709df0e4f2b6
         'mars\\' => 
         array (
             0 => __DIR__ . '/../..' . '/marsphp/mars',
+        ),
+        'lib\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/marsphp/lib',
         ),
         'app\\' => 
         array (

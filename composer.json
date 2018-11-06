@@ -17,6 +17,7 @@
     "autoload": { 
         "psr-4": { 
             "mars\\": "marsphp/mars/",
+            "lib\\": "marsphp/lib/",
             "app\\": "app/"
         } 
     }

@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use mars\DB\driveModel;
+use mars\DB\Query;
 use mars\DB\Sql;
 
 class Index
@@ -80,10 +81,23 @@ class Index
 //            'age' => 44,
 //            '_ext' => ['day > 2018-08-30','mm != 3'],
 //        ]);
-        $query->select(2);
+        $query->select();
         debug( $query->outSql );
         debug($query->doSql);
         debug($query->sqlParam);
+
+    }
+
+    public function test4(){
+        $query = new Query('default', 'test', '*');
+
+//        debug( $query->get(['name' => 'Jack', 'age' => 44],[2,5],'',  '',['id','name']));
+
+//        debug($query->insert(['name' => 'JackLove','age' => 24]));
+
+//        debug($query->update(['id'=>19],['name'=>'fast']));
+
+        debug($query->delete(['id'=>18]));
 
     }
 

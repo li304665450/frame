@@ -11,30 +11,17 @@ namespace mars\DB;
 
 class Query
 {
-    public $database = 'default';  //数据库配置名，默认为default
-    public $otherDB = '';          //若需当前连接该地址下其他库，填写库名
-    public $table = '';            //表名
+    public $sqlConstructor = '';   //sql语句构造类
     public $sql = '';              //最后一次操作的sql语句
     public $db = '';               //DB操作对象
-    public $query = '';
-    public $field = '*';           //查询字段，默认所有字段
 
-    public function __construct()
+    public function __construct($database,$table,$field,$otherDB = '')
     {
-        $prefix = config('database.'.$this->database)['prefix'];
-        $path_arr = explode('\\',get_called_class());
-        $modelName = strtolower(end($path_arr));
-        $this->table = $prefix.$modelName;
-        $this->db = new DB($this->database,$this->otherDB);
-    }
-
-    /**
-     * 设置需要查询的字段
-     * @param string $field
-     */
-    public function setField($field)
-    {
+        $config = config('database.'.$database);
+        $prefix = $config['prefix'];
         $this->field = $field;
+        $this->db = new DB($this->database,$this->otherDB);
+        $this->sqlConstructor = new  Sql($prefix.$table);
     }
 
     /**
@@ -46,17 +33,33 @@ class Query
     }
 
     /**
-     * 数据获取方法
-     * @param string $condition 筛选条件，数字为limit取几条，数组为筛选条件
-     * @param string $order 排序条件
+     * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
      * @param string $limit 分页条件
-     * @return array|null 结果集
+     * @param array $condExt 除equals外的条件
+     * @param array $order 排序条件
+     * @param array $group 分组条件
+     * @param array $select 结果集
+     * return array|null
      */
-    public function get($condition = '',$limit = '',$condExt = '', $order = '',$select =''){
+    public function get($condition = [],$limit = '',$condExt = [], $order = [],$select =[], $group = []){
 
+        $limit && $condition['_limit'] = $limit;
+        $condExt && $condition['_ext'] = $condExt;
+        $order && $condition['_order'] = $order;
+        $select && $condition['_select'] = $select;
+        $group && $condition['_group'] = $group;
 
+        $this->sqlConstructor->select($condition);
 
+        $set = $this->sqlConstructor->getSet();
 
+        $this->sql = $set['outSql'];
+
+        try{
+            return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getFetch() : null;
+        }catch (\ErrorException $e){
+                debug($e);
+        }
 
     }
 
@@ -67,8 +70,13 @@ class Query
      */
     public function insert($data){
 
+        $this->sqlConstructor->insert($data);
 
-        return $this->db->query($sql,$param) ? $this->db->getInsertId() : null;
+        $set = $this->sqlConstructor->getSet();
+
+        $this->sql = $set['outSql'];
+
+        return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getInsertId() : null;
 
     }
 
@@ -80,8 +88,13 @@ class Query
      */
     public function update($condition,$data){
 
+        $this->sqlConstructor->update($condition,$data);
 
-        return $this->db->query($sql,$param) ? $this->db->getRowCount() : null;
+        $set = $this->sqlConstructor->getSet();
+
+        $this->sql = $set['outSql'];
+
+        return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getRowCount() : null;
 
     }
 
@@ -92,8 +105,13 @@ class Query
      */
     public function delete($condition){
 
+        $this->sqlConstructor->delete($condition);
 
-        return $this->db->query($sql,$where['param']) ? $this->db->getRowCount() : null;
+        $set = $this->sqlConstructor->getSet();
+
+        $this->sql = $set['outSql'];
+
+        return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getRowCount() : null;
 
     }
 

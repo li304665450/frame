@@ -41,7 +41,7 @@ function config($name = null){
        $arr = explode('.',$name);
 
        foreach ($arr as $v){
-           $config = !empty($config[$v]) ? $config[$v] : '';
+           $config = $config[$v] ?: '';
        }
     }
 

@@ -23,12 +23,23 @@ class Sql
     }
 
     /**
-     * 数据获取方法
-     * @param string $condition 筛选条件，数字为limit取几条，数组为筛选条件
+     * 获取结果集(全家桶)
+     * return array
      */
-    public function select($condition = ''){
+    public function getSet(){
+        $result = [];
+        $result['outSql'] = $this->outSql;
+        $result['doSql'] = $this->doSql;
+        $result['sqlParam'] = $this->sqlParam;
+        return $result;
+    }
 
-        $select = $condition['_select'] ?: '*';
+    /**
+     * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
+     */
+    public function select($condition = []){
+
+        $select = $condition['_select'] ? implode(',',$condition['_select']) : '*';
 
         $sql = 'SELECT '.$select.' FROM '.$this->table;
 
@@ -36,11 +47,11 @@ class Sql
 
         if (is_array($condition) && !empty($condition)){
 
-            $group_str = $condition['_group'] ?: ' GROUP BY '.$condition['_group'];
+            $group_str = $condition['_group'] ? ' GROUP BY '.implode(',',$condition['_group']) : '';
 
-            $order_str = $condition['_order'] ?: ' ORDER BY '.$condition['_order'];
+            $order_str = $condition['_order'] ? self::splitOrder($condition['_order']) : '';
 
-            $limit_str = $condition['_limit'] ?: ' LIMIT '.$condition['_limit'];
+            $limit_str = $condition['_limit'] ? self::splitLimit($condition['_limit']) : '';
 
             $where = $this->splitCondition($condition,' AND ');
 
@@ -164,6 +175,7 @@ class Sql
     }
 
     /**
+     * 拓展检索条件处理方法
      * @param $ext
      * @return array
      */
@@ -177,13 +189,49 @@ class Sql
         if (!is_array($ext))
             return $result;
 
+        $i = 0;//条件计数器，解决同一字段多条件筛选问题
+
         foreach ($ext as $value){
             list($k,$gull,$v) = explode(' ',$value);
             $result['out_sql']  .= " AND $value";
-            $result['sql'] .= " AND $k $gull :$k";
-            $result['param'][":$k"] = $v;
+            $result['sql'] .= " AND $k $gull :$k$i";
+            $result['param'][":$k$i"] = $v;
+            $i++;
         }
         return $result;
+    }
+
+    /**
+     * order条件处理方法
+     * @param $order
+     * return string
+     * @return string
+     */
+    private function splitOrder($order){
+        $str = ' ORDER BY ';
+        foreach ($order as $key=>$value){
+            $desc = $value ? 'desc' : 'asc';
+            $str .= $key.' '.$desc.' ';
+        }
+        return $str;
+    }
+
+    /**
+     * limit条件处理方法
+     * @param $limit
+     * @return string
+     */
+    private function splitLimit($limit){
+        $str = ' LIMIT ';
+
+        if (!is_array($limit)){
+            return $str.intval($limit);
+        }else{
+            if (count($limit) == 2){
+                return $str.implode(',',$limit);
+            }
+        }
+        return '';
     }
 
 }

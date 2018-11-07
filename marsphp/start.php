@@ -9,6 +9,9 @@
 //加载助手函数
 require_once __DIR__ . '/function.php';
 
+//加载项目全局函数
+require_once __DIR__ . '/../app/common.php';
+
 //加载配置信息
 require_once __DIR__ . '/load/loadConfig.php';
 

@@ -20,7 +20,7 @@ class Query
         $config = config('database.'.$database);
         $prefix = $config['prefix'];
         $this->field = $field;
-        $this->db = new DB($this->database,$this->otherDB);
+        $this->db = new DB($database,$this->otherDB);
         $this->sqlConstructor = new  Sql($prefix.$table);
     }
 
@@ -33,21 +33,11 @@ class Query
     }
 
     /**
-     * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
-     * @param string $limit 分页条件
-     * @param array $condExt 除equals外的条件
-     * @param array $order 排序条件
-     * @param array $group 分组条件
-     * @param array $select 结果集
+     * 数据获取方法
+     * @param array $condition
      * return array|null
      */
-    public function get($condition = [],$limit = '',$condExt = [], $order = [],$select =[], $group = []){
-
-        $limit && $condition['_limit'] = $limit;
-        $condExt && $condition['_ext'] = $condExt;
-        $order && $condition['_order'] = $order;
-        $select && $condition['_select'] = $select;
-        $group && $condition['_group'] = $group;
+    public function get($condition = []){
 
         $this->sqlConstructor->select($condition);
 
@@ -55,11 +45,7 @@ class Query
 
         $this->sql = $set['outSql'];
 
-        try{
-            return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getFetch() : null;
-        }catch (\ErrorException $e){
-                debug($e);
-        }
+        return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getFetch() : null;
 
     }
 

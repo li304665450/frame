@@ -77,3 +77,13 @@ function debug()
         echo "</pre>";
     }
 }
+
+/**
+ * api回调结果，json格式及http状态码处理
+ * @param $result
+ * @param $httpCode
+ */
+function json($result,$httpCode){
+    http_response_code($httpCode);
+    echo json_encode($result);
+}

@@ -8,14 +8,13 @@
 
 namespace app\index\controller;
 
-use mars\DB\driveModel;
-use mars\DB\Query;
-use mars\DB\Sql;
+use mars\Controller;
 
-class Index
+class Index extends Controller
 {
-    public function index(){
-        echo 'Welcome to MarsPhp!';
+    public function index()
+    {
+        echo '<style type="text/css">*{ padding: 0; margin: 0; } .think_default_text{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:)</h1><p> MarsPHP V1<br/><span style="font-size:30px">深藏身与名 - 为API开发设计的高性能框架</span></p><span style="font-size:22px;">[ V1.0 版本由 <a href="https://github.com/li304665450/frame.git">李磊</a> 独家发布 ]</span></div><script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script><script type="text/javascript" src="http://ad.topthink.com/Public/static/client.js"></script>';
     }
 
     public function test(){
@@ -63,10 +62,19 @@ class Index
     }
 
     public function test2(){
-        $cc = new driveModel('ims_test','default');
-        $where = ['name' => 'Jack','age' => 44];
-        $result = $cc->get($where);
-        var_dump($result);
+        $test = model('Test');
+        $where = ['name' => 'Jack', 'age' => 44];
+        $order = ['id' => 'desc', 'age' => 'desc'];
+        $limit = [0, 3];
+//        $id = $test->insert(['name' => 'Mark','age' => 24]);
+//        var_dump($id);
+//        $result = $test->update(['id'=>13],['name'=>'Sandy','age'=>17]);
+//        var_dump($test->getLastSql());
+//        $result = $test->delete(['id'=>20,'name'=>'Sandy']);
+//        var_dump($result);
+//        var_dump($test->getLastSql());
+        $result = $test->get($where,'');
+        $this->apiResult(1,'成功',$result,'500');
     }
     
     public function test3(){
@@ -97,8 +105,12 @@ class Index
 
 //        debug($query->update(['id'=>19],['name'=>'fast']));
 
-        debug($query->delete(['id'=>18]));
+//        debug($query->delete(['id'=>18]));
 
+    }
+
+    public function test5(){
+        outTest(111);
     }
 
 

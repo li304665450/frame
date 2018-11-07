@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use mars\Controller;
+use mars\DB\Query;
 
 class Index extends Controller
 {
@@ -63,7 +64,8 @@ class Index extends Controller
 
     public function test2(){
         $test = model('Test');
-        $where = ['name' => 'Jack', 'age' => 44];
+//        $test->setField(['id','name']);
+        $where = ['name' => 'Jack', 'age' => 44, '_debug'=>0];
         $order = ['id' => 'desc', 'age' => 'desc'];
         $limit = [0, 3];
 //        $id = $test->insert(['name' => 'Mark','age' => 24]);
@@ -73,12 +75,13 @@ class Index extends Controller
 //        $result = $test->delete(['id'=>20,'name'=>'Sandy']);
 //        var_dump($result);
 //        var_dump($test->getLastSql());
-        $result = $test->get($where,'');
-        $this->apiResult(1,'成功',$result,'500');
+        $result = $test->get($where);
+        apiResult(1,'成功',$result,'500');
+//        debug($result);
+//        debug($test->getLastSql());
     }
     
     public function test3(){
-
         $query = new Sql('ims_test');
 
 //        debug($query);
@@ -97,7 +100,7 @@ class Index extends Controller
     }
 
     public function test4(){
-        $query = new Query('default', 'test', '*');
+        $query = new Query('default', 'test');
 
 //        debug( $query->get(['name' => 'Jack', 'age' => 44],[2,5],'',  '',['id','name']));
 

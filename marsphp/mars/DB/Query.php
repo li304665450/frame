@@ -9,17 +9,18 @@
 namespace mars\DB;
 
 
+use lib\exception\ApiException;
+
 class Query
 {
     public $sqlConstructor = '';   //sql语句构造类
     public $sql = '';              //最后一次操作的sql语句
     public $db = '';               //DB操作对象
 
-    public function __construct($database,$table,$field,$otherDB = '')
+    public function __construct($database,$table,$otherDB = '')
     {
         $config = config('database.'.$database);
         $prefix = $config['prefix'];
-        $this->field = $field;
         $this->db = new DB($database,$this->otherDB);
         $this->sqlConstructor = new  Sql($prefix.$table);
     }
@@ -44,6 +45,8 @@ class Query
         $set = $this->sqlConstructor->getSet();
 
         $this->sql = $set['outSql'];
+
+        $condition['_debug'] && debug($set['outSql']);
 
         return $this->db->query($set['doSql'], $set['sqlParam']) ? $this->db->getFetch() : null;
 

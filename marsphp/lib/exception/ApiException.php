@@ -14,7 +14,7 @@ namespace lib\exception;
  * Class ApiException
  * @package app\common\lib\exception
  */
-class ApiException {
+class ApiException extends \Exception {
 
     //提示信息
     public  $message;
@@ -23,7 +23,7 @@ class ApiException {
     //系统状态码
     public $code;
 
-    public function __construct($message = "", $httpCode = 500, $code = 0)
+    public function __construct($message = "", $httpCode = 500, $code = 3)
     {
         $this->message = $message;
         $this->httpCode = $httpCode;

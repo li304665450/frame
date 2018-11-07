@@ -87,3 +87,20 @@ function json($result,$httpCode){
     http_response_code($httpCode);
     echo json_encode($result);
 }
+
+/**
+ * api接口回调消息封装方法
+ * @param $status 业务状态码
+ * @param $msg 提示信息
+ * @param array $data 数据
+ * @param int $httpCode http状态码
+ * @return \Json
+ */
+function apiResult($status, $msg, $data = [], $httpCode = 200){
+    $result = [
+        'status' => $status,
+        'msg' => $msg,
+        'data' => $data
+    ];
+    return json($result, $httpCode);
+}

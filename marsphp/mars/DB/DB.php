@@ -9,6 +9,8 @@
 namespace mars\DB;
 
 
+use lib\exception\ApiException;
+
 class DB
 {
     private $database = '';             //数据库配置
@@ -60,8 +62,8 @@ class DB
             $dbh->setAttribute(\PDO::ATTR_PERSISTENT,true);
             $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->dbh = $dbh;
-        } catch (PDOException $e) {
-            die ("Error!: " . $e->getMessage() . "<br/>");
+        } catch (\Exception $e) {
+            throw new ApiException($e->getMessage());
         }
     }
 
@@ -71,13 +73,23 @@ class DB
      * @param $sql 语句
      * @param array $param 参数
      * @return mixed 返回影响行数
+     * @throws \Exception
      */
     public function query($sql,$param = []){
         if (empty($param)){
-            $this->query = $this->dbh->query($sql);
+            try{
+                $this->query = $this->dbh->query($sql);
+            }catch (\Exception $exception){
+                throw new ApiException($exception->getMessage().' of '.$sql);
+            }
+
         }else{
-            $this->query = $this->dbh->prepare($sql);
-            $this->query->execute($param);
+            try{
+                $this->query = $this->dbh->prepare($sql);
+                $this->query->execute($param);
+            }catch (\Exception $exception){
+                throw new ApiException($exception->getMessage().' of '.$sql);
+            }
         }
         return $this->query;
     }

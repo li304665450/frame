@@ -15,6 +15,9 @@ require_once __DIR__ . '/../app/common.php';
 //加载配置信息
 require_once __DIR__ . '/load/loadConfig.php';
 
+//加载错误处理方式
+require_once __DIR__ . '/load/loadError.php';
+
 //加载默认加载模块
 //require_once __DIR__ . '/load/loadModule.php';
 

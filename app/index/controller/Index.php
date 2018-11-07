@@ -120,7 +120,7 @@ class Index extends Controller
         $bi = \query('wxbi','wxa_game');
         debug($bi->get());
 
-        debug($GLOBALS);
+//        debug($GLOBALS);
 
 
 

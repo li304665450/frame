@@ -118,7 +118,7 @@ class DB
     public function getFetch(){
 
         $list = [];
-        while ($row = $this->query->fetch()) {
+        while ($row = $this->query->fetch(\PDO::FETCH_OBJ)) {
             array_push($list,$row);
         }
 

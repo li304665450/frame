@@ -7,8 +7,6 @@
  */
 
 return [
-    'model'  => [
-        'isDev' => 1
-    ],
-
+    'isDev' => 1,
+    'debug' => 1
 ];

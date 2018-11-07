@@ -1,7 +1,7 @@
 <?php
 
 //生产环境下的错误处理
-if (!config('model.isDev')){
+if (!config('debug')){
 
     //页面不显示报错信息
     ini_set('display_startup_errors','Off');
@@ -17,8 +17,11 @@ if (!config('model.isDev')){
             $trance[] = $value['file'].' in '.$value['line'];
         }
 
-        apiResult($exception->code,$message,$trance,$exception->httpCode);
-
+        if (config('config')){
+            apiResult($exception->code,$message,$trance,$exception->httpCode);
+        }else{
+            apiResult($exception->code,'系统内部错误','',$exception->httpCode);
+        }
     }
 
     //指定错误处理函数

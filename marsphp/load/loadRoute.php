@@ -7,12 +7,13 @@
  */
 
 //路由处理模块
-$route = $_SERVER['PATH_INFO'] ?: '/index/index/index';
+$route = $_SERVER['PATH_INFO'];
 $param = explode('/', $route);
-$group = $param[1];
-$controller = $param[2];
-$action = $param[3];
+$group = $param[1] ?: 'index';
+$controller = $param[2] ?: 'index';
+$action = $param[3] ?: 'index';
+unset($param);
 $controllerName = 'app\\'.$group.'\\controller\\' . ucfirst($controller);
 
-$controll = new $controllerName();
-$controll->$action();
+//run
+(new $controllerName())->$action();

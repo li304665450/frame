@@ -66,6 +66,24 @@ function model($model,$group = null){
     return $result;
 }
 
+/**
+ * 数据快速操作类助手函数
+ * @param $database db配置名
+ * @param $table 表名
+ * @param string $otherDB 连接下其他库名
+ * return null
+ */
+function query($database,$table,$otherDB = ''){
+    $result = null;
+    if ($database && $table){
+        if (empty($GLOBALS['query'][$database][$table][$otherDB]))
+            $GLOBALS['query'][$database][$table][$otherDB] = new \mars\DB\Query($database,$table,$otherDB);
+
+        $result = $GLOBALS['query'][$database][$table][$otherDB];
+    }
+    return $result;
+}
+
 // 打印出错信息
 function debug()
 {

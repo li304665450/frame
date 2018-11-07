@@ -76,8 +76,8 @@ class Index extends Controller
 //        var_dump($result);
 //        var_dump($test->getLastSql());
         $result = $test->get($where);
-        apiResult(1,'成功',$result,'500');
-//        debug($result);
+//        apiResult(1,'成功',$result,'500');
+        debug($GLOBALS);
 //        debug($test->getLastSql());
     }
     
@@ -114,6 +114,17 @@ class Index extends Controller
 
     public function test5(){
         outTest(111);
+    }
+
+    public function test6(){
+        $bi = \query('wxbi','wxa_game');
+        debug($bi->get());
+
+        debug($GLOBALS);
+
+
+
+
     }
 
 

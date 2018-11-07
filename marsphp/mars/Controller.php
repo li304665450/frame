@@ -12,6 +12,7 @@ namespace mars;
 class Controller
 {
     /**
+     * html页面加载方法
      * @param $data
      * @param string $path
      */
@@ -50,7 +51,7 @@ class Controller
     }
 
     /**
-     *
+     * 变量传递加载方法
      * @param $tpl
      */
     public function assign($tpl){

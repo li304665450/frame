@@ -18,5 +18,5 @@ foreach ($file as $k => $v){
 
 $config = array_merge($config_default,$config_extend);
 
-$config_default = null;
-$config_extend  = null;
+unset($config_default);
+unset($config_extend);

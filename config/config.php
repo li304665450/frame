@@ -8,7 +8,7 @@
 
 return [
     'model'  => [
-        'isDev' => 0
+        'isDev' => 1
     ],
 
 ];

@@ -76,10 +76,10 @@ function model($model,$group = null){
 function query($database,$table,$otherDB = ''){
     $result = null;
     if ($database && $table){
-        if (empty($GLOBALS['query'][$database][$table][$otherDB]))
-            $GLOBALS['query'][$database][$table][$otherDB] = new \mars\DB\Query($database,$table,$otherDB);
+        if (empty($GLOBALS['query'][$database][$otherDB]))
+            $GLOBALS['query'][$database][$otherDB] = new \mars\DB\Query($database,$table,$otherDB);
 
-        $result = $GLOBALS['query'][$database][$table][$otherDB];
+        $result = $GLOBALS['query'][$database][$otherDB];
     }
     return $result;
 }

@@ -78,4 +78,21 @@ class Controller
 
     }
 
+    /**
+     * api成功回调方法
+     * @param $msg 信息
+     * @param $data 数据集
+     */
+    protected function success($msg,$data){
+        apiResult(1,$msg,$data,200);
+    }
+
+    /**
+     * api错误回调方法
+     * @param $msg 信息
+     */
+    protected function error($msg){
+        apiResult(2,$msg,501);
+    }
+
 }

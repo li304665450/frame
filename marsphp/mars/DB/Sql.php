@@ -53,15 +53,15 @@ class Sql
 
             $limit_str = $condition['_limit'] ? self::splitLimit($condition['_limit']) : '';
 
-            $where = $this->splitCondition($condition,' AND ');
+            $where = $this->splitCondition($condition);
 
-            $ext = $this->splitExt($condition['_ext'] ?: '');
+            $ext = $this->splitExt($condition['_ext']);
 
             $this->sqlParam = array_merge($where['param'],$ext['param']);
 
             $this->outSql = $sql.' WHERE '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
             $this->doSql = $sql.' WHERE '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
-            
+
         }elseif (is_int($condition)){
 
             $this->doSql = $this->outSql = $sql.' LIMIT '.$condition;
@@ -72,18 +72,18 @@ class Sql
 
     /**
      * 数据插入方法
-     * @param $data
+     * @param array $data
      * @return null
      */
     public function insert($data){
 
         if(count($data) < 1) return null;
 
-        $sql = "INSERT INTO ".$this->table;
         $param = [];
         $front = [];
         $after = [];
         $out_after = [];
+        $sql = "INSERT INTO ".$this->table;
         foreach ($data as $k => $v){
             $param[':'.$k] = $v;
             array_push($front,$k);
@@ -103,8 +103,8 @@ class Sql
 
     /**
      * 数据更新修改方法
-     * @param $condition 行筛选条件
-     * @param $data 数据数组
+     * @param array $condition 行筛选条件
+     * @param array $data 数据数组
      * @return mixed|null 影响行数
      */
     public function update($condition,$data){
@@ -113,21 +113,20 @@ class Sql
 
         $sql = "UPDATE ".$this->table.' SET';
 
-        $where = $this->splitCondition($condition,' AND ');
-        $set = $this->splitCondition($data,',');
+        $where = $this->splitCondition($condition);
+        $set = self::splitSet($data);
 
         $param = array_merge($where['param'],$set['param']);
 
         $this->outSql = $sql.' '.$set['out_sql'].' WHERE '.$where['out_sql'];
         $this->doSql = $sql.' '.$set['sql'].' WHERE '.$where['sql'];
         $this->sqlParam = $param;
-
     }
 
     /**
      * 数据删除
-     * @param $condition 行筛选条件
-     * @return mixed|null 影响行数
+     * @param array $condition 行筛选条件
+     * @return null
      */
     public function delete($condition){
 
@@ -135,51 +134,78 @@ class Sql
 
         $sql = 'DELETE FROM '.$this->table.' WHERE ';
 
-        $where = $this->splitCondition($condition,' AND ');
+        $where = $this->splitCondition($condition);
 
         $this->outSql = $sql.$where['out_sql'];
         $this->doSql = $sql.$where['sql'];
         $this->sqlParam = $where['param'];
-        
+
     }
 
     /**
      * 拆分条件参数方法
-     * @param $condition 条件数组
-     * @param string $glue 分割符
+     * @param array $condition 条件数组
      * @return array 分割后的数组或字符串
      */
-    protected function splitCondition($condition,$glue,$connet = '='){
+    protected function splitCondition($condition){
         $param = [];
         $arr = [];
         $out_arr = [];
         foreach ($condition as $k=>$v){
             if (substr($k,0,1) == '_') continue;
-            if (is_int($k)){
-                array_push($arr,$v);
-                array_push($out_arr,$v);
-            }else{
-                $param[':'.$k] = $v;
-                array_push($arr,$k.$connet.':'.$k);
-                array_push($out_arr,$k.$connet.$v);
-            }
+
+            $param[':'.$k] = $v;
+            array_push($arr,$k.'=:'.$k);
+            array_push($out_arr,$k.'='.$v);
         }
 
         $result = [];
-        $result['sql'] = implode($glue,$arr);
-        $result['out_sql'] = implode($glue,$out_arr);
+        $result['sql'] = implode(' AND ',$arr);
+        $result['out_sql'] = implode(' AND ',$out_arr);
 
         $result['param'] = $param;
+
         return $result;
 
     }
 
     /**
+     * update语句中
+     * set条件处理方法
+     * @param array $set 条件
+     * @return array
+     */
+    private function splitSet($set){
+        $param = [];
+        $arr = [];
+        $out_arr = [];
+        foreach ($set as $k=>$v){
+            $param[':s_'.$k] = $v;
+            array_push($arr,$k.'=:s_'.$k);
+            array_push($out_arr,$k.'='.$v);
+        }
+
+        $result = [];
+        $result['sql'] = implode(',',$arr);
+        $result['out_sql'] = implode(',',$out_arr);
+
+        $result['param'] = $param;
+        return $result;
+    }
+
+    /**
      * 拓展检索条件处理方法
-     * @param $ext
+     * @param array $ext
      * @return array
      */
     private function splitExt($ext){
+
+        if (!$ext){
+            return [
+                'param' => []
+            ];
+        }
+
         $result = [
             'out_sql'   => '',
             'sql'    => '',
@@ -203,22 +229,26 @@ class Sql
 
     /**
      * order条件处理方法
-     * @param $order
+     * @param array $order
      * return string
      * @return string
      */
     private function splitOrder($order){
         $str = ' ORDER BY ';
         foreach ($order as $key=>$value){
-            $desc = $value ? 'desc' : 'asc';
-            $str .= $key.' '.$desc.' ';
+            if (is_int($key)){//只传入排序字段，默认升序
+                $str .= $value.' ASC ';
+            }elseif (is_string($key)){//指明字段排序方式
+                $desc = $value ? 'DESC' : 'ASC';
+                $str .= $key.' '.$desc.' ';
+            }
         }
         return $str;
     }
 
     /**
      * limit条件处理方法
-     * @param $limit
+     * @param array $limit
      * @return string
      */
     private function splitLimit($limit){

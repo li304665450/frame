@@ -95,4 +95,28 @@ class Controller
         apiResult(2,$msg,501);
     }
 
+    /**
+     * 获取
+     * @param string $method
+     * @param bool $default
+     * return array
+     */
+    protected function request($method = '', $default = false){
+        $request = [];
+
+        if (empty($method)){
+            $request  = array_merge($_GET,$_POST);
+        }else{
+            $valueName = '_'.strtoupper($method);
+            $request = $$valueName;
+        }
+
+        if ($default){
+            $request = array_merge($request, $default);
+        }
+
+        return $request;
+
+    }
+
 }

@@ -20,7 +20,7 @@ $log = new Logger("my-frame-log");
 $log->pushHandler(new StreamHandler('log/monolog.log', logger::WARNING));
 
 //添加swiftmailer处理重要错误,发送邮件
-$transport = \Swift_SmtpTransport::newInstance('https://mail.163.com',80)
+$transport = \Swift_SmtpTransport::newInstance('https://mail.163.com',25)
     ->setUsername('15600017090')
     ->setPassword('li8369945');
 $mailer = \Swift_Mailer::newInstance($transport);

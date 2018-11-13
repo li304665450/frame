@@ -21,5 +21,7 @@ require_once __DIR__ . '/load/loadError.php';
 //加载默认加载模块
 //require_once __DIR__ . '/load/loadModule.php';
 
-//加载路由模块
-require_once __DIR__ . '/load/loadRoute.php';
+//在非命令行模式，加载路由模块
+if (php_sapi_name() != 'cli'){
+    require_once __DIR__ . '/load/loadRoute.php';
+}

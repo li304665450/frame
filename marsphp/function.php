@@ -84,7 +84,9 @@ function query($database,$table,$otherDB = ''){
     return $result;
 }
 
-// 打印出错信息
+/**
+ * 页面信息打印方法
+ */
 function debug()
 {
     $argList = func_get_args();
@@ -94,6 +96,19 @@ function debug()
         print_r( $value );
         echo "</pre>";
     }
+}
+
+/**
+ * cli命令行打印方法
+ */
+function debugCli()
+{
+    $argList = func_get_args();
+    foreach ( $argList as $value )
+    {
+        print_r( $value );
+    }
+    echo "\n";
 }
 
 /**

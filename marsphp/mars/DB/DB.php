@@ -22,7 +22,8 @@ class DB
     /**
      * DB constructor.
      * @param string $database 数据库配置
-     * @param string $otherDB  若需连接该地址下其他库，填写库名
+     * @param string $otherDB 若需连接该地址下其他库，填写库名
+     * @throws ApiException
      */
     function __construct($database, $otherDB)
     {

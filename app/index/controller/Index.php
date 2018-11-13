@@ -77,7 +77,7 @@ class Index extends Controller
 //        var_dump($test->getLastSql());
         $result = $test->get($where);
 //        apiResult(1,'成功',$result,'500');
-        debug($GLOBALS);
+        $this->success('成功',$result);
 //        debug($test->getLastSql());
     }
     
@@ -87,11 +87,11 @@ class Index extends Controller
 //        debug($query);
 //        die();
 
-//        $query->select([
-//            'name' => 'Jack',
-//            'age' => 44,
-//            '_ext' => ['day > 2018-08-30','mm != 3'],
-//        ]);
+        $query->select([
+            'name' => 'Jack',
+            'age' => 44,
+            '_ext' => ['day > 2018-08-30','mm != 3'],
+        ]);
         $query->select();
         debug( $query->outSql );
         debug($query->doSql);
@@ -118,13 +118,15 @@ class Index extends Controller
 
     public function test6(){
         $bi = \query('wxbi','wxa_game');
-        debug($bi->get());
+        $content = $bi->get();
 
-//        debug($GLOBALS);
+        $this->success('成功',$content);
 
+    }
 
-
-
+    public function test7(){
+//        $this->success('get',$_GET);
+//        $this->success('post',$_POST);
     }
 
 

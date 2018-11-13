@@ -8,9 +8,6 @@
 
 namespace mars\DB;
 
-
-use lib\exception\ApiException;
-
 class Query
 {
     public $sqlConstructor = '';   //sql语句构造类
@@ -21,7 +18,7 @@ class Query
     {
         $config = config('database.'.$database);
         $prefix = $config['prefix'];
-        $this->db = new DB($database,$this->otherDB);
+        $this->db = new DB($database,$otherDB);
         $this->sqlConstructor = new  Sql($prefix.$table);
     }
 
@@ -36,7 +33,8 @@ class Query
     /**
      * 数据获取方法
      * @param array $condition
-     * return array|null
+     * @return array|null
+     * @throws \Exception
      */
     public function get($condition = []){
 
@@ -54,8 +52,9 @@ class Query
 
     /**
      * 数据插入方法
-     * @param $data 数据数组
+     * @param array $data 数据数组
      * @return mixed|null 插入后的行id
+     * @throws \Exception
      */
     public function insert($data){
 
@@ -71,9 +70,10 @@ class Query
 
     /**
      * 数据更新修改方法
-     * @param $condition 行筛选条件
-     * @param $data 数据数组
+     * @param array $condition 行筛选条件
+     * @param array $data 数据数组
      * @return mixed|null 影响行数
+     * @throws \Exception
      */
     public function update($condition,$data){
 
@@ -89,8 +89,9 @@ class Query
 
     /**
      * 数据删除
-     * @param $condition 行筛选条件
+     * @param array $condition 行筛选条件
      * @return mixed|null 影响行数
+     * @throws \Exception
      */
     public function delete($condition){
 

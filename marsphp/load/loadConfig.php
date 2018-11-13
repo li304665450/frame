@@ -20,3 +20,5 @@ $config = array_merge($config_default,$config_extend);
 
 unset($config_default);
 unset($config_extend);
+unset($k);
+unset($v);

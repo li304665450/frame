@@ -59,8 +59,8 @@ class Sql
 
             $this->sqlParam = array_merge($where['param'],$ext['param']);
 
-            $this->outSql = $sql.' WHERE '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
-            $this->doSql = $sql.' WHERE '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
+            $this->outSql = $sql.' WHERE 1=1 '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
+            $this->doSql = $sql.' WHERE 1=1 '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
 
         }elseif (is_int($condition)){
 
@@ -220,8 +220,12 @@ class Sql
         foreach ($ext as $value){
             list($k,$gull,$v) = explode(' ',$value);
             $result['out_sql']  .= " AND $value";
-            $result['sql'] .= " AND $k $gull :$k$i";
-            $result['param'][":$k$i"] = $v;
+            if ($gull == 'like'){
+                $result['sql']  .= " AND $value";
+            }else{
+                $result['sql'] .= " AND $k $gull :$k$i";
+                $result['param'][":$k$i"] = $v;
+            }
             $i++;
         }
         return $result;

@@ -75,9 +75,9 @@ class Index extends Controller
 //        $result = $test->delete(['id'=>20,'name'=>'Sandy']);
 //        var_dump($result);
 //        var_dump($test->getLastSql());
-        $result = $test->get($where);
+        $result = $test->get([],["name like '%Jack%'"]);
 //        apiResult(1,'成功',$result,'500');
-        $this->success('成功',$result);
+//        $this->success('成功',$result);
 //        debug($test->getLastSql());
     }
     

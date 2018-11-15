@@ -17,7 +17,7 @@ class Model
     public $table = '';            //表名
     public $db = '';               //DB操作对象
     public $query = '';            //sql操作对象
-    public $field = ['*'];           //查询字段，默认所有字段
+    public $field = '';           //查询字段，默认所有字段
 
     public function __construct($database = '')
     {
@@ -71,7 +71,8 @@ class Model
         $condExt && $condition['_ext'] = $condExt;
         $order && $condition['_order'] = $order;
         $group && $condition['_group'] = $group;
-        $condition['_select'] = $select ?: $this->field;
+        $this->field && $condition['_select'] = $this->field;
+        $select && $condition['_select'] = $select;
 
         return $this->query->get($condition);
 

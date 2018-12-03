@@ -70,8 +70,8 @@ function model($model,$group = null){
  * 数据快速操作类助手函数
  * @param $database db配置名
  * @param $table 表名
- * @param string $otherDB 连接下其他库名
- * return null
+ * @param string $otherDB 连接配置下其他库名
+ * @return null
  */
 function query($database,$table,$otherDB = ''){
     $result = null;
@@ -136,4 +136,13 @@ function apiResult($status, $msg, $data = [], $httpCode = 200){
         'data' => $data
     ];
     return json($result, $httpCode);
+}
+
+/**
+ * 获取全局信息
+ * @param string $name
+ * @return mixed
+ */
+function getName($name = 'controller'){
+    return $GLOBALS[$name];
 }

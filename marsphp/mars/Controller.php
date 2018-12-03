@@ -13,7 +13,7 @@ class Controller
 {
     /**
      * html页面加载方法
-     * @param $data
+     * @param $tpl
      * @param string $path
      */
     public function display($tpl, $path = ''){
@@ -80,26 +80,26 @@ class Controller
 
     /**
      * api成功回调方法
-     * @param $msg 信息
-     * @param $data 数据集
+     * @param string $msg 提示信息
+     * @param array $data 回调数据
      */
-    protected function success($msg,$data){
+    protected function success($msg = '',$data = []){
         apiResult(1,$msg,$data,200);
     }
 
     /**
      * api错误回调方法
-     * @param $msg 信息
+     * @param string $msg 提示信息
      */
-    protected function error($msg){
-        apiResult(2,$msg,501);
+    protected function error($msg = ''){
+        apiResult(2,$msg,'',501);
     }
 
     /**
-     * 获取
+     * http传值获取
      * @param string $method
      * @param bool $default
-     * return array
+     * @return array
      */
     protected function request($method = '', $default = false){
         $request = [];
@@ -117,6 +117,14 @@ class Controller
 
         return $request;
 
+    }
+
+    /**
+     * 获取当前控制器名称
+     * @return string
+     */
+    protected function Controller(){
+        return ucfirst(getName('controller'));
     }
 
 }

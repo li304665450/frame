@@ -26,6 +26,9 @@ $action = $param[3] ?: 'index';
 unset($param);//销毁中间变量
 $controllerName = 'app\\'.$group.'\\controller\\' . ucfirst($controller);
 
+if ($group == 'common')
+    throw new \lib\exception\ApiException('非法请求',401);
+
 if (!class_exists($controllerName))
     throw new \lib\exception\ApiException('控制器不存在',404);
 

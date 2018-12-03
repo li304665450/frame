@@ -23,15 +23,5 @@ class Site extends Controller
         require __DIR__.'/../view/site/view.php';
     }
 
-    public function test(){
-        $tpl['content'] = 'Hello Mars';
-        $tpl['age'] = 333;
-        $tpl['arr1'] = [
-            ['text' => '111'],
-            ['text' => '222']
-        ];
 
-        $this->display($tpl);
-
-    }
 }

@@ -7,8 +7,7 @@ ini_set('error_reporting','E_ALL & ~E_NOTICE');
 ini_set('log_errors','On');
 
 //设置自定义报错回调方式
-function appException($exception) {
-
+set_exception_handler(function ($exception){
     $httpCode = $exception->httpCode ?: 500;
     $trance[] = $exception->getFile().' in '.$exception->getLine();
     foreach ($exception->getTrace() as $value){
@@ -23,7 +22,4 @@ function appException($exception) {
     }else{
         apiResult($exception->getCode(),$exception->getMessage(),$trance,$httpCode);
     }
-}
-
-//指定错误处理函数
-set_exception_handler('appException');
+});

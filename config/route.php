@@ -12,5 +12,11 @@ return [
         'method' => function($_Get) {
 
         }
+    ],
+    '/login' => [
+        'route' => '/system/login/login',
+    ],
+    '/save_error_logger' => [
+        'route' => '/system/login/save_error_logger',
     ]
 ];

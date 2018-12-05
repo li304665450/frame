@@ -7,16 +7,14 @@
  */
 
 return [
-    '/test' =>[
-        'route' => '/index/index/test2',
-        'method' => function($_Get) {
-
-        }
-    ],
     '/login' => [
-        'route' => '/system/login/login',
+        'route' => '/system/user/login',
     ],
     '/save_error_logger' => [
-        'route' => '/system/login/save_error_logger',
+        'route' => '/system/user/save_error_logger',
+    ],
+    '/get_info' => [
+        'route' => '/system/user/get_info',
     ]
+
 ];

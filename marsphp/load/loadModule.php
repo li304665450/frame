@@ -10,7 +10,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SwiftMailerHandler;
 
-//解决前端调用api跨域问题
+//设置http头信息，解决前端调用api跨域问题
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Method: *');
 header('Access-Control-Allow-Headers: *');

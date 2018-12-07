@@ -119,13 +119,14 @@ function debugCli()
 function json($result,$httpCode){
     http_response_code($httpCode);
     echo json_encode($result);
+    exit();
 }
 
 /**
  * api接口回调消息封装方法
  * @param $status 业务状态码
  * @param $msg 提示信息
- * @param array $data 数据
+ * @param array $content 数据
  * @param int $httpCode http状态码
  * @return \Json
  */
@@ -145,4 +146,26 @@ function apiResult($status, $msg, $data = [], $httpCode = 200){
  */
 function getName($name = 'controller'){
     return $GLOBALS[$name];
+}
+
+function input($key = '', $default = []){
+    $request = [];
+
+    switch ($key){
+        case 'get':
+            $request = $_GET;
+            break;
+        case 'post':
+            $request = \lib\Request::getPost();
+            break;
+        default:
+            $request  = array_merge($_GET,\lib\Request::getPost());
+            break;
+    }
+
+    if ($default){
+        $request = array_merge($request, $default);
+    }
+
+    return $request;
 }

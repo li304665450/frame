@@ -10,6 +10,7 @@ namespace mars\DB;
 
 
 use lib\exception\ApiException;
+use lib\Unit;
 
 class DB
 {
@@ -120,8 +121,10 @@ class DB
 
         $list = [];
         while ($row = $this->query->fetch(\PDO::FETCH_OBJ)) {
-            array_push($list,$row);
+            array_push($list,Unit::objToArray($row));
         }
+
+        count($list) == 1 && $list  = $list[0];
 
         return $list;
     }

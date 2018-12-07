@@ -80,11 +80,10 @@ class Controller
 
     /**
      * api成功回调方法
-     * @param string $msg 提示信息
      * @param array $data 回调数据
      */
-    protected function success($msg = '',$data = []){
-        apiResult(1,$msg,$data,200);
+    protected function success($data = []){
+        apiResult(1,'success',$data,200);
     }
 
     /**
@@ -92,31 +91,7 @@ class Controller
      * @param string $msg 提示信息
      */
     protected function error($msg = ''){
-        apiResult(2,$msg,'',501);
-    }
-
-    /**
-     * http传值获取
-     * @param string $method
-     * @param bool $default
-     * @return array
-     */
-    protected function request($method = '', $default = false){
-        $request = [];
-
-        if (empty($method)){
-            $request  = array_merge($_GET,$_POST);
-        }else{
-            $valueName = '_'.strtoupper($method);
-            $request = $$valueName;
-        }
-
-        if ($default){
-            $request = array_merge($request, $default);
-        }
-
-        return $request;
-
+        apiResult(2,$msg,'',200);
     }
 
     /**

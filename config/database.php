@@ -17,7 +17,7 @@ return [
         // 服务器地址
         'host'        => '127.0.0.1',
         // 数据库名
-        'dbName'        => 'app',
+        'dbName'        => 'fbi',
         // 用户名
         'user'        => 'root',
         // 密码
@@ -31,7 +31,7 @@ return [
         // 数据库编码默认采用utf8
         'charset'         => 'utf8',
         // 数据库表前缀
-        'prefix'          => 'ims_',
+        'prefix'          => '',
     ],
     'default2' => [
         'dbms'            => 'mysql',

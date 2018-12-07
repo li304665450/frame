@@ -13,8 +13,11 @@ return [
     '/save_error_logger' => [
         'route' => '/system/user/save_error_logger',
     ],
-    '/get_info' => [
-        'route' => '/system/user/get_info',
+    '/user/info' => [
+        'route' => '/system/user/getInfo',
+    ],
+    '/test' => [
+        'route' => '/index/index/test',
     ]
 
 ];

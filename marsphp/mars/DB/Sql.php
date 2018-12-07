@@ -59,8 +59,8 @@ class Sql
 
             $this->sqlParam = array_merge($where['param'],$ext['param']);
 
-            $this->outSql = $sql.' WHERE 1=1 '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
-            $this->doSql = $sql.' WHERE 1=1 '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
+            $this->outSql = $sql.' WHERE 1=1 AND '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
+            $this->doSql = $sql.' WHERE 1=1 AND '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
 
         }elseif (is_int($condition)){
 

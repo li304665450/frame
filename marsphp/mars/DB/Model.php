@@ -9,22 +9,24 @@
 namespace mars\DB;
 
 
+use lib\Unit;
+
 class Model
 {
 
-    public $database = 'default';  //数据库配置名，默认为default
+    public $database;               //数据库配置名
     public $otherDB = '';          //若需当前连接该地址下其他库，填写库名
     public $table = '';            //表名
     public $db = '';               //DB操作对象
     public $query = '';            //sql操作对象
     public $field = '';           //查询字段，默认所有字段
 
-    public function __construct($database = '')
+    public function __construct()
     {
-        $database = $database ?: $this->database;
+        $database = $this->database ?: config('model_default_database');
         $path_arr = explode('\\',get_called_class());
-        $modelName = strtolower(end($path_arr));
-        $this->query = new Query($database,$modelName,$this->otherDB);
+        $table = $this->table ?: Unit::humpToLine(end($path_arr),'_');
+        $this->query = new Query($database,$table,$this->otherDB);
     }
 
     /**

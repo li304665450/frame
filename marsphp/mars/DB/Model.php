@@ -62,7 +62,7 @@ class Model
      * @param array $condExt
      * @param array $order 排序条件
      * @param array $limit 分页条件
-     * @param array $select 查询条件
+     * @param array $select 查询字段
      * @param array $group 分组条件
      * @return array|null
      * @throws \Exception
@@ -78,6 +78,23 @@ class Model
 
         return $this->query->get($condition);
 
+    }
+
+    /**
+     * 数据总行数获取
+     * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
+     * @param array $condExt
+     * @param array $group 分组条件
+     * @return array|null
+     * @throws \Exception
+     */
+    public function getTotal($condition = [],$condExt = [], $group = []){
+
+        $condition['_select'] = ['count(1) as total'];
+        $condExt && $condition['_ext'] = $condExt;
+        $group && $condition['_group'] = $group;
+
+        return $this->query->get($condition);
     }
 
     /**

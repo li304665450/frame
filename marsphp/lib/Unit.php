@@ -63,6 +63,18 @@ class Unit
         return $str;
     }
 
+    public static function recuArr($arr){
+        foreach ($arr as &$value){
+            if (is_array($value))
+                self::recuArr($value);
+
+            $str = json_decode($value,true);
+            !is_null($str) && $value = $str;
+        }
+
+        return $arr;
+    }
+
 
 
 }

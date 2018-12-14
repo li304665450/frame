@@ -118,8 +118,8 @@ class Sql
 
         $param = array_merge($where['param'],$set['param']);
 
-        $this->outSql = $sql.' '.$set['out_sql'].' WHERE '.$where['out_sql'];
-        $this->doSql = $sql.' '.$set['sql'].' WHERE '.$where['sql'];
+        $this->outSql = $sql.' '.$set['out_sql'].' WHERE 1=1 '.$where['out_sql'];
+        $this->doSql = $sql.' '.$set['sql'].' WHERE 1=1 '.$where['sql'];
         $this->sqlParam = $param;
     }
 
@@ -153,6 +153,7 @@ class Sql
         $out_arr = [];
         foreach ($condition as $k=>$v){
             if (substr($k,0,1) == '_') continue;
+            if (empty($v) && $v !== 0) continue;
 
             $param[':'.$k] = $v;
             array_push($arr,$k.'=:'.$k);

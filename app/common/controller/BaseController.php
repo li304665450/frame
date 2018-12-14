@@ -17,6 +17,11 @@ class BaseController extends Controller
         debug($this->getModel());
     }
 
+    public function doLimit($limit){
+        $start = ($limit['page'] -1) * $limit['size'];
+        return [$start,$limit['size']];
+    }
+
     public function update(){
 
     }

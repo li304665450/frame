@@ -167,5 +167,5 @@ function input($key = '', $default = []){
         $request = array_merge($request, $default);
     }
 
-    return $request;
+    return \lib\Unit::recuArr($request);
 }

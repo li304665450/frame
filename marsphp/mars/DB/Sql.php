@@ -156,7 +156,7 @@ class Sql
 
             $param[':'.$k] = $v;
             array_push($arr,$k.'=:'.$k);
-            array_push($out_arr,$k.'='.$v);
+            array_push($out_arr,$k."='".$v."'");
         }
 
         $result = [];
@@ -185,7 +185,7 @@ class Sql
         foreach ($set as $k=>$v){
             $param[':s_'.$k] = $v;
             array_push($arr,$k.'=:s_'.$k);
-            array_push($out_arr,$k.'='.$v);
+            array_push($out_arr,$k."='".$v."'");
         }
 
         $result = [];

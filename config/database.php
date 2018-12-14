@@ -15,13 +15,13 @@ return [
         // 数据库类型
         'dbms'            => 'mysql',
         // 服务器地址
-        'host'        => '127.0.0.1',
+        'host'        => '192.168.20.131',
         // 数据库名
-        'dbName'        => 'fbi',
+        'dbName'        => 'fb',
         // 用户名
         'user'        => 'root',
         // 密码
-        'pass'        => 'li123456',
+        'pass'        => 'TuYoutest',
         // 端口
         'hostport'        => '3306',
         // 连接dsn

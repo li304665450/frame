@@ -59,8 +59,8 @@ class Sql
 
             $this->sqlParam = array_merge($where['param'],$ext['param']);
 
-            $this->outSql = $sql.' WHERE 1=1 AND '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
-            $this->doSql = $sql.' WHERE 1=1 AND '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
+            $this->outSql = $sql.' WHERE 1=1 '.$where['out_sql'].$ext['out_sql'].$group_str.$order_str.$limit_str;
+            $this->doSql = $sql.' WHERE 1=1 '.$where['sql'].$ext['sql'].$group_str.$order_str.$limit_str;
 
         }elseif (is_int($condition)){
 
@@ -91,9 +91,9 @@ class Sql
             array_push($out_after,$v);
         }
 
-        $front_str = '('.implode(',',$front).')';
-        $after_str = '('.implode(',',$after).')';
-        $out_after_str = '('.implode(',',$out_after).')';
+        $front_str = "(".implode(",",$front).")";
+        $after_str = "(".implode(",",$after).")";
+        $out_after_str = "('".implode("','",$out_after)."')";
 
         $this->outSql = $sql.' '.$front_str.' VALUES '.$out_after_str;
         $this->doSql = $sql.' '.$front_str.' VALUES '.$after_str;
@@ -160,8 +160,11 @@ class Sql
         }
 
         $result = [];
-        $result['sql'] = implode(' AND ',$arr);
-        $result['out_sql'] = implode(' AND ',$out_arr);
+
+        if (count($arr) > 0){
+            $result['sql'] = ' AND '.implode(' AND ',$arr);
+            $result['out_sql'] = ' AND '.implode(' AND ',$out_arr);
+        }
 
         $result['param'] = $param;
 
@@ -217,10 +220,12 @@ class Sql
 
         $i = 0;//条件计数器，解决同一字段多条件筛选问题
 
+        $gull_special = ['like', 'in'];
+
         foreach ($ext as $value){
             list($k,$gull,$v) = explode(' ',$value);
             $result['out_sql']  .= " AND $value";
-            if ($gull == 'like'){
+            if (in_array($gull,$gull_special)){
                 $result['sql']  .= " AND $value";
             }else{
                 $result['sql'] .= " AND $k $gull :$k$i";

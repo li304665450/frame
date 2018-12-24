@@ -63,6 +63,12 @@ class Unit
         return $str;
     }
 
+    /**
+     * 递归处理接收数据
+     * 将所有json字符串转为可操作数组
+     * @param $arr
+     * @return mixed
+     */
     public static function recuArr($arr){
         foreach ($arr as &$value){
             if (is_array($value))
@@ -74,7 +80,6 @@ class Unit
 
         return $arr;
     }
-
 
 
 }

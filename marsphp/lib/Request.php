@@ -12,6 +12,10 @@ namespace lib;
 class Request
 {
 
+    public static function getInput(){
+        return json_decode(file_get_contents("php://input"), true);
+    }
+
     /**
      * post参数获取方法
      * @return bool|string
@@ -19,7 +23,7 @@ class Request
     public static function getPost(){
 
         if ($_SERVER['CONTENT_TYPE'] == 'application/json;charset=UTF-8')
-            return json_decode(file_get_contents("php://input"), true);
+            return self::getInput();
 
         return $_POST;
 

@@ -158,6 +158,10 @@ function input($key = '', $default = []){
         case 'post':
             $request = \lib\Request::getPost();
             break;
+        case 'put':
+            $request = \lib\Request::getInput();
+        case 'delete':
+            $request = \lib\Request::getInput();
         default:
             $request  = array_merge($_GET,\lib\Request::getPost());
             break;

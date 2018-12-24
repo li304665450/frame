@@ -8,16 +8,16 @@
 
 return [
     '/login' => [
-        'route' => '/system/user/login',
+        'route' => '/system/login/login',
     ],
     '/save_error_logger' => [
         'route' => '/system/user/save_error_logger',
     ],
-    '/user/info' => [
-        'route' => '/system/user/getInfo',
+    '/userInfo' => [
+        'route' => '/system/login/getInfo',
     ],
     '/test' => [
         'route' => '/index/index/test',
-    ]
+    ],
 
 ];

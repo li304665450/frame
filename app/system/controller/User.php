@@ -14,64 +14,22 @@ use app\common\lib\Request;
 
 class User extends BaseController
 {
-    /**
-     * 登录
-     */
-    public function login(){
-        $param = input('post');
 
-        $user = model('user')->get([
-            'userName' => $param['userName'],
-            'password' => $param['password']
-        ]);
 
-        if ($user)
-            $this->success(['token' => $user['token']]);
-
-        $this->error('账号或密码错误');
-    }
-
-    public function getInfo(){
+    public function fetchList(){
         $param = input('get');
 
-        $user = model('user')->get(['token' => $param['token']]);
-        $group = model('userGroup')->get([],["id in ({$user['group']})"]);
-
-        if ($group){
-            $access = '';
-            $allow_product = '';
-            foreach ($group as $key => $value){
-                if ($key == 0) {
-                    $access = $value['access'];
-                    $allow_product = $value['allow_product'];
-                }else{
-                    $access .= ','.$value['access'];
-                    $allow_product .= ','.$value['allow_product'];
-                }
-            }
-
-            $result = [
-                'roles' => explode(',',$access),
-                'introduction' => '我是超级管理员',
-                'avatar' => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-                'name' => '李磊'
-//                'name' => $user['realName']
-            ];
-            $this->success($result);
-        }
-
-        $this->error('用户权限错误');
-    }
-
-    public function userList(){
-        $param = input('get');
+        $limit = $this->doLimit($param['limit']);
 
         $groupList = model('userGroup')->get();
 
         $groupList = array_column($groupList,'name','id');
 
-        $userList = model('user')->get();
+        $userList = model('user')->get($param['where'],[],$param['order'],$limit);
 
+//        $this->success(model('user')->getLastSql());
+
+        //把用户组ID转为名称
         foreach ($userList as &$value){
             $arr = explode(',',$value['group']);
             $group = '';
@@ -89,35 +47,20 @@ class User extends BaseController
 
     }
 
-    public function groupList(){
-        $param = input('get');
-
-        if (!$param)
-            $this->success('');
-
-        $limit = $this->doLimit($param['limit']);
-
-        $total  = model('userGroup')->getTotal($param['where']);
-
-        $list = model('userGroup')->get($param['where'],[],$param['order'],$limit);
-
-        $this->success(['items' => $list, 'total' => $total['total'], 'param' => $param]);
-    }
-
-    public function createGroup(){
-        $param = input('post');
+    public function create(){
+        $param = input('put');
 
         if (!$param)
             $this->success('');
 
         $param['update_time'] = date('Y-m-d h:i:s');
 
-        $insert = model('userGroup')->insert($param);
+        $insert = model('user')->insert($param);
 
         $this->success($insert);
     }
 
-    public function updateGroup()
+    public function update()
     {
         $param = input('post');
 
@@ -126,13 +69,8 @@ class User extends BaseController
 
         unset($param['update_time']);
 
-        $update = model('userGroup')->updateById($param['id'], $param);
+        $update = model('user')->updateById($param['id'], $param);
 
-        $this->success($update);
-    }
-
-    public function test(){
-        $update = model('userGroup')->updateById(1, ['status' => 0]);
         $this->success($update);
     }
 

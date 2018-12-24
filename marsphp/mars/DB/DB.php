@@ -124,8 +124,6 @@ class DB
             array_push($list,Unit::objToArray($row));
         }
 
-        count($list) == 1 && $list  = $list[0];
-
         return $list;
     }
 

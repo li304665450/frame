@@ -11,27 +11,40 @@ namespace app\common\controller;
 
 use mars\Controller;
 
-class BaseController extends Controller
+class BaseController extends Controller implements BaseControllerInt
 {
-    public function get(){
-        debug($this->getModel());
+    public function fetchList(){
+
     }
 
-    public function doLimit($limit){
-        $start = ($limit['page'] -1) * $limit['size'];
-        return [$start,$limit['size']];
+    public function getInfo(){
+
     }
 
     public function update(){
 
     }
 
-    public function insert(){
+    public function create(){
 
     }
 
-    public function deleted(){
+    public function delete(){
 
+    }
+
+    public function options()
+    {
+        // TODO: Implement options() method.
+    }
+
+    public function doLimit($limit){
+
+        if (!$limit)
+            return [];
+
+        $start = ($limit['page'] -1) * $limit['size'];
+        return [$start,$limit['size']];
     }
 
     protected function getModel(){

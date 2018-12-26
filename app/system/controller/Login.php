@@ -13,6 +13,12 @@ use mars\Controller;
 
 class Login extends Controller
 {
+
+    public function options()
+    {
+        $this->success('Opinons success');
+    }
+
     /**
      * 登录
      */
@@ -25,7 +31,7 @@ class Login extends Controller
         ]);
 
         if ($user)
-            $this->success(['token' => $user['token']]);
+            $this->success(['token' => $user[0]['token']]);
 
         $this->error('账号或密码错误');
     }

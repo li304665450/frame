@@ -21,27 +21,7 @@ class User extends BaseController
 
         $limit = $this->doLimit($param['limit']);
 
-        $groupList = model('userGroup')->get();
-
-        $groupList = array_column($groupList,'name','id');
-
         $userList = model('user')->get($param['where'],[],$param['order'],$limit);
-
-//        $this->success(model('user')->getLastSql());
-
-        //把用户组ID转为名称
-        foreach ($userList as &$value){
-            $arr = explode(',',$value['group']);
-            $group = '';
-            foreach ($arr as $k=>$v){
-                if ($k == 0){
-                    $group = $groupList[$v];
-                }else{
-                    $group .= ','.$groupList[$v];
-                }
-            }
-            $value['group'] = $group;
-        }
 
         $this->success(['items' => $userList, 'total' => 100, 'param' => $param]);
 
@@ -53,6 +33,7 @@ class User extends BaseController
         if (!$param)
             $this->success('');
 
+        $param['create_time'] = date('Y-m-d h:i:s');
         $param['update_time'] = date('Y-m-d h:i:s');
 
         $insert = model('user')->insert($param);

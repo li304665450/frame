@@ -19,6 +19,6 @@ return [
         'POST'    => 'update',
         'PUT'     => 'create',
         'DELETE'  => 'delete',
-        'OPTIONS' => 'options',
+        'OPTIONS' => 'options'
     ],
 ];

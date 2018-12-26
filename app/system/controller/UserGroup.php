@@ -63,4 +63,11 @@ class UserGroup extends BaseController
         $this->success($update);
     }
 
+    public function fetchMap(){
+        $groupList = model('userGroup')->get();
+        $groupList = array_column($groupList,'name','id');
+
+        $this->success($groupList);
+    }
+
 }

@@ -27,6 +27,9 @@ $action = $param[3] ?: 'index';
 if (count($param) == 3)
     $action = config('restful_method_action')[$_SERVER['REQUEST_METHOD']];
 
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')
+    $action = 'options';
+
 unset($param);//销毁中间变量
 $controllerName = 'app\\'.$group.'\\controller\\' . ucfirst($controller);
 
@@ -42,6 +45,7 @@ if (!$controllerClass instanceof \mars\Controller)
     throw new \lib\exception\ApiException('非法控制器',402);
 
 //var_dump($_SERVER['REQUEST_METHOD']);
+//var_dump($action);
 //die();
 
 if (!method_exists($controllerClass, $action))

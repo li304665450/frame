@@ -35,7 +35,7 @@ class BaseController extends Controller implements BaseControllerInt
 
     public function options()
     {
-        // TODO: Implement options() method.
+       $this->success('Opinons success');
     }
 
     public function doLimit($limit){

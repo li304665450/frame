@@ -40,7 +40,6 @@ class Login extends Controller
         $param = input('get');
 
         $user = model('user')->get(['token' => $param['token']]);
-//        $group = model('userGroup')->get([],["id in ({$user[0]['group']})"]);
         $group_ids = explode(',',$user[0]['group']);
         $group = model('userGroup')->get([
             'id' => [
@@ -50,28 +49,80 @@ class Login extends Controller
 
         if ($group){
             $access = '';
-            $allow_product = '';
+            $access_game = '';
             foreach ($group as $key => $value){
                 if ($key == 0) {
                     $access = $value['access'];
-                    $allow_product = $value['allow_product'];
+                    $access_game = $value['access_game'];
                 }else{
-                    $access .= ','.$value['access'];
-                    $allow_product .= ','.$value['allow_product'];
+                    !empty($value['access']) && $access .= ','.$value['access'];
+                    !empty($value['access_game']) && $access_game .= ','.$value['access_game'];
                 }
             }
 
+            $default_game = explode('_',$user[0]['default_game']);
+
+            array_walk($default_game, function (&$value) {
+                $value = intval($value);
+            });
+
             $result = [
+                'user_id' => $user[0]['id'],
                 'roles' => explode(',',$access),
+                'access_game' => $this->getGameList($access_game),
+                'default_game' => $default_game,
                 'introduction' => '我是超级管理员',
                 'avatar' => 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-                'name' => '李磊'
-//                'name' => $user['realName']
+                'name' => $user[0]['realName']
             ];
             $this->success($result);
         }
 
         $this->error('用户权限错误');
+    }
+
+    public function getGameList($access_game){
+
+        $clouds = [];
+        $games = [];
+        foreach (explode(',', $access_game) as $value){
+            $access = explode('_',$value);
+            !empty($access[0]) && $clouds[] = $access[0];
+            !empty($access[1]) && $games[] = $access[1];
+        }
+
+        $cloudList = model('game')->get([
+            'pid' => 0,
+            'code_id' => [
+                'in' => $clouds
+            ]
+        ]);
+
+        $gameList = model('game')->get([
+            'pid' => [
+                '<>' => 0
+            ],
+            'code_id' => [
+                'in' => $games
+            ]
+        ]);
+
+        $tree = [];
+        foreach (array_merge($cloudList, $gameList) as $value) {
+            if (!$value['pid']){
+                $tree[$value['code_id']] = [
+                    'value' => $value['code_id'],
+                    'label' => $value['name']
+                ];
+            } else {
+                $tree[$value['pid']]['children'][] = [
+                    'value' => $value['code_id'],
+                    'label' => $value['name'],
+                ];
+            }
+        }
+
+        return array_values($tree);
     }
 
 }

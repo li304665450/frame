@@ -14,7 +14,7 @@ class Sql
 
     public $doSql;
     public $outSql;
-    public $sqlParam;
+    public $sqlParam = [];
     private $table;
     private $param;
     private $arr  = [];
@@ -23,6 +23,15 @@ class Sql
     public function __construct($table)
     {
         $this->table = $table;
+    }
+
+    /**
+     * 清楚字段条件缓存
+     */
+    public function clear(){
+        $this->arr = [];
+        $this->out_arr = [];
+        $this->param = [];
     }
 
     /**
@@ -41,6 +50,8 @@ class Sql
      * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
      */
     public function select($condition = []){
+
+        $this->clear();
 
         $select = $condition['_select'] ? implode(',',$condition['_select']) : '*';
 

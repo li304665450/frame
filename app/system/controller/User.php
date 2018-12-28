@@ -50,6 +50,10 @@ class User extends BaseController
 
         unset($param['update_time']);
 
+        if ($param['default_game']){
+            $param['default_game'] = implode('_',$param['default_game']);
+        }
+
         $update = model('user')->updateById($param['id'], $param);
 
         $this->success($update);

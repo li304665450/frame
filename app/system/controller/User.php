@@ -21,7 +21,7 @@ class User extends BaseController
 
         $limit = $this->doLimit($param['limit']);
 
-        $userList = model('user')->get($param['where'],[],$param['order'],$limit);
+        $userList = model('user')->get($param['where'],$param['order'],$limit);
 
         $this->success(['items' => $userList, 'total' => 100, 'param' => $param]);
 

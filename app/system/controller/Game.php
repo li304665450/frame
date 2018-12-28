@@ -15,7 +15,7 @@ class Game extends BaseController
 {
     public function fetchList()
     {
-        $list = model('game')->get([],[],['pid']);
+        $list = model('game')->get([], ['pid']);
 
         $tree = [];
         foreach ($list as $value){
@@ -45,7 +45,7 @@ class Game extends BaseController
 
     public function getTree()
     {
-        $list = model('game')->get(['status' => 1],[],['pid']);
+        $list = model('game')->get(['status' => 1], ['pid']);
 
         $tree = [];
         foreach ($list as $value){

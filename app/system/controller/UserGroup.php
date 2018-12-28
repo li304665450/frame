@@ -23,7 +23,7 @@ class UserGroup extends BaseController
 
         $total  = model('userGroup')->getTotal($param['where']);
 
-        $list = model('userGroup')->get($param['where'],[],$param['order'],$limit);
+        $list = model('userGroup')->get($param['where'],$param['order'],$limit);
 
         //把权限和游戏内容转为数组
         foreach ($list as &$group_item) {

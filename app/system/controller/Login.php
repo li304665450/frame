@@ -40,7 +40,13 @@ class Login extends Controller
         $param = input('get');
 
         $user = model('user')->get(['token' => $param['token']]);
-        $group = model('userGroup')->get([],["id in ({$user[0]['group']})"]);
+//        $group = model('userGroup')->get([],["id in ({$user[0]['group']})"]);
+        $group_ids = explode(',',$user[0]['group']);
+        $group = model('userGroup')->get([
+            'id' => [
+                'in' => $group_ids
+            ]
+        ]);
 
         if ($group){
             $access = '';

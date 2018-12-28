@@ -16,7 +16,10 @@ class Sql
     public $outSql;
     public $sqlParam;
     private $table;
-    
+    private $param;
+    private $arr  = [];
+    private $out_arr = [];
+
     public function __construct($table)
     {
         $this->table = $table;
@@ -144,57 +147,59 @@ class Sql
 
     /**
      * 拆分条件参数方法
-     * @param array $condition 条件数组
+     * @param $condition 条件数组
+     * @param string $field 二级差分时需要传递条件字段
      * @return array 分割后的数组或字符串
      */
-    protected function splitCondition($condition){
-        $param = [];
-        $arr = [];
-        $out_arr = [];
+    protected function splitCondition($condition, $field = ''){
+
         foreach ($condition as $k=>$v){
             if (substr($k,0,1) == '_') continue;
             if (empty($v) && $v !== 0) continue;
 
-            $param[':'.$k] = $v;
-            array_push($arr,$k.'=:'.$k);
-            array_push($out_arr,$k."='".$v."'");
+            if (is_array($v) && $k != 'in'){
+                $this->splitCondition($v, $k);
+                continue;
+            }
+
+            static $i = 0;//条件计数器，解决同一字段多条件筛选问题
+
+            if (empty($field)) {
+                $this->param[':'.$i.$k] = $v;
+                array_push($this->arr,"`{$k}` = :{$i}{$k}");
+                array_push($this->out_arr, "`{$k}` = '{$v}'");
+                $i++;
+            }else{
+                switch ($k) {
+                    case 'like':
+                        array_push($this->arr,"`{$field}` like '%{$v}%'");
+                        array_push($this->out_arr,"`{$field}` like '%{$v}%'");
+                        break;
+                    case 'in':
+                        array_push($this->arr,"`{$field}` in (".implode(',', $v).")");
+                        array_push($this->out_arr,"`{$field}` in (".implode(',', $v).")");
+                        break;
+                    default:
+                        $this->param[':'.$i.$field] = $v;
+                        array_push($this->arr,"`{$field}` {$k} :{$i}{$field}");
+                        array_push($this->out_arr, "`{$field}` {$k} '{$v}'");
+                        $i++;
+                }
+            }
+
         }
 
         $result = [];
 
-        if (count($arr) > 0){
-            $result['sql'] = ' AND '.implode(' AND ',$arr);
-            $result['out_sql'] = ' AND '.implode(' AND ',$out_arr);
+        if (count($this->arr) > 0){
+            $result['sql'] = ' AND '.implode(' AND ',$this->arr);
+            $result['out_sql'] = ' AND '.implode(' AND ',$this->out_arr);
         }
 
-        $result['param'] = $param;
+        $result['param'] = $this->param;
 
         return $result;
 
-    }
-
-    /**
-     * update语句中
-     * set条件处理方法
-     * @param array $set 条件
-     * @return array
-     */
-    private function splitSet($set){
-        $param = [];
-        $arr = [];
-        $out_arr = [];
-        foreach ($set as $k=>$v){
-            $param[':s_'.$k] = $v;
-            array_push($arr,"`$k`".'=:s_'.$k);
-            array_push($out_arr,"`$k`"."='".$v."'");
-        }
-
-        $result = [];
-        $result['sql'] = implode(',',$arr);
-        $result['out_sql'] = implode(',',$out_arr);
-
-        $result['param'] = $param;
-        return $result;
     }
 
     /**
@@ -234,6 +239,30 @@ class Sql
             }
             $i++;
         }
+        return $result;
+    }
+
+    /**
+     * update语句中
+     * set条件处理方法
+     * @param array $set 条件
+     * @return array
+     */
+    private function splitSet($set){
+        $param = [];
+        $arr = [];
+        $out_arr = [];
+        foreach ($set as $k=>$v){
+            $param[':s_'.$k] = $v;
+            array_push($arr,"`$k`".'=:s_'.$k);
+            array_push($out_arr,"`$k`"."='".$v."'");
+        }
+
+        $result = [];
+        $result['sql'] = implode(',',$arr);
+        $result['out_sql'] = implode(',',$out_arr);
+
+        $result['param'] = $param;
         return $result;
     }
 

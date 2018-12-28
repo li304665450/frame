@@ -49,16 +49,6 @@ class Model
     /**
      * 数据获取方法
      * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
-     * @param string $limit 分页条件
-     * @param array $condExt 除equals外的条件
-     * @param array $order 排序条件
-     * @param array $group 分组条件
-     * @param array $select 结果集
-     * return array|null
-     */
-    /**
-     * 数据获取方法
-     * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
      * @param array $condExt
      * @param array $order 排序条件
      * @param array $limit 分页条件
@@ -67,10 +57,9 @@ class Model
      * @return array|null
      * @throws \Exception
      */
-    public function get($condition = [],$condExt = [], $order = [],$limit = [],$select =[], $group = []){
+    public function get($condition = [], $order = [], $limit = [], $select =[], $group = []){
 
         $limit && $condition['_limit'] = $limit;
-        $condExt && $condition['_ext'] = $condExt;
         $order && $condition['_order'] = $order;
         $group && $condition['_group'] = $group;
         $this->field && $condition['_select'] = $this->field;

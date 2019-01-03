@@ -77,13 +77,12 @@ class Model
      * @return array|null
      * @throws \Exception
      */
-    public function getTotal($condition = [],$condExt = [], $group = []){
+    public function getTotal($condition = [], $group = []){
 
         $condition['_select'] = ['count(1) as total'];
-        $condExt && $condition['_ext'] = $condExt;
         $group && $condition['_group'] = $group;
 
-        return $this->query->get($condition);
+        return $this->query->get($condition)[0]['total'];
     }
 
     /**

@@ -23,7 +23,9 @@ class User extends BaseController
 
         $userList = model('user')->get($param['where'],$param['order'],$limit);
 
-        $this->success(['items' => $userList, 'total' => 100, 'param' => $param]);
+        $total  = model('user')->getTotal($param['where']);
+
+        $this->success(['items' => $userList, 'total' => $total, 'param' => $param]);
 
     }
 

@@ -31,7 +31,7 @@ class UserGroup extends BaseController
             $group_item['access_game'] = explode(',', $group_item['access_game']);
         }
 
-        $this->success(['items' => $list, 'total' => $total['total'], 'param' => $param]);
+        $this->success(['items' => $list, 'total' => $total, 'param' => $param]);
     }
 
     public function create(){

@@ -13,9 +13,16 @@ use app\common\controller\BaseController;
 
 class Game extends BaseController
 {
+    /**
+     * @throws \Exception
+     */
     public function fetchList()
     {
-        $list = model('game')->get([], ['pid']);
+        try {
+            $list = model('game')->get([], ['pid']);
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
         $tree = [];
         foreach ($list as $value){
@@ -43,9 +50,16 @@ class Game extends BaseController
         $this->success($tree);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getTree()
     {
-        $list = model('game')->get(['status' => 1], ['pid']);
+        try {
+            $list = model('game')->get(['status1' => 1], ['pid']);
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
         $tree = [];
         foreach ($list as $value){
@@ -71,6 +85,9 @@ class Game extends BaseController
         $this->success($tree);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function create()
     {
         $param = input('put');
@@ -80,25 +97,29 @@ class Game extends BaseController
 
         $param['update_time'] = date('Y-m-d h:i:s');
 
-        $insert = model('game')->insert($param);
-
-        $this->success($insert);
+        try {
+            $this->success(model('game')->insert($param));
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function update()
     {
         $param = input('post');
-
-//        $this->success($param);
 
         if (!$param)
             $this->success('');
 
         unset($param['update_time']);
 
-        $update = model('game')->updateById($param['id'], $param);
-
-        $this->success($update);
+        try {
+            $this->success(model('game')->updateById($param['id'], $param));
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
-
 }

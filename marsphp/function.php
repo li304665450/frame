@@ -1,17 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lilei
- * Date: 2018/6/12
- * Time: 上午10:49
- */
+declare(ticks=1);
 
 /**
  * 获取目录下所有文件名
- * @param dir 目录路径
+ * @param string $dir 目录路径
  * @return array 包含所有文件名的数组
  */
-function require_dir($dir){
+function require_dir(string $dir):array
+{
     $file_arr = [];
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
@@ -30,10 +26,10 @@ function require_dir($dir){
 
 /**
  * 获取配置信息
- * @param name 配置名以点间隔
- * @return mixed 配置信息数组
+ * @param string|null $name 配置名以点间隔
+ * @return mixed|string 配置信息数组
  */
-function config($name = null){
+function config(string $name = null){
 
     $config = $GLOBALS['config'];
 
@@ -50,11 +46,12 @@ function config($name = null){
 
 /**
  * 模型类助手函数
- * @param model 模型类类名
- * @param null group 分组名，默认当前分组
- * @return null 模型类实例
+ * @param string $model 模型类类名
+ * @param string|null $group 分组名，默认当前分组
+ * @return \mars\DB\Model 模型类实例
  */
-function model($model,$group = null){
+function model(string $model, string $group = null):\mars\DB\Model
+{
     $group = empty($group) ? $GLOBALS['group'] : $group;
     $result = null;
     if (!empty($model)){
@@ -68,12 +65,13 @@ function model($model,$group = null){
 
 /**
  * 数据快速操作类助手函数
- * @param $database db配置名
- * @param $table 表名
+ * @param string $database db配置名
+ * @param string $table 表名
  * @param string $otherDB 连接配置下其他库名
- * @return null
+ * @return \mars\DB\Query 数据类实例
  */
-function query($database,$table,$otherDB = ''){
+function query(string $database, string $table, string $otherDB = ''):\mars\DB\Query
+{
     $result = null;
     if ($database && $table){
         if (empty($GLOBALS['query'][$database][$otherDB]))
@@ -116,7 +114,8 @@ function debugCli()
  * @param $result
  * @param $httpCode
  */
-function json($result,$httpCode){
+function json($result,$httpCode)
+{
     http_response_code($httpCode);
     echo json_encode($result);
     exit();
@@ -124,19 +123,20 @@ function json($result,$httpCode){
 
 /**
  * api接口回调消息封装方法
- * @param $status 业务状态码
- * @param $msg 提示信息
- * @param array $content 数据
+ * @param string $status 业务状态码
+ * @param string $msg 提示信息
+ * @param array $data 数据
  * @param int $httpCode http状态码
- * @return \Json
+ * @return void
  */
-function apiResult($status, $msg, $data = [], $httpCode = 200){
+function apiResult(string $status, string $msg, array $data = [], int $httpCode = 200):void
+{
     $result = [
         'status' => $status,
         'msg' => $msg,
         'data' => $data
     ];
-    return json($result, $httpCode);
+    json($result, $httpCode);
 }
 
 /**
@@ -148,8 +148,14 @@ function getName($name = 'controller'){
     return $GLOBALS[$name];
 }
 
-function input($key = '', $default = []){
-    $request = [];
+/**
+ * 获取request请求传递的参数
+ * @param string $key http请求类型
+ * @param array $default 默认需要的数据
+ * @return array 数据
+ */
+function input(string $key = '', array $default = []):array
+{
 
     switch ($key){
         case 'get':
@@ -160,8 +166,10 @@ function input($key = '', $default = []){
             break;
         case 'put':
             $request = \lib\Request::getInput();
+            break;
         case 'delete':
             $request = \lib\Request::getInput();
+            break;
         default:
             $request  = array_merge($_GET,\lib\Request::getPost());
             break;

@@ -49,7 +49,6 @@ class Model
     /**
      * 数据获取方法
      * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
-     * @param array $condExt
      * @param array $order 排序条件
      * @param array $limit 分页条件
      * @param array $select 查询字段
@@ -72,7 +71,6 @@ class Model
     /**
      * 数据总行数获取
      * @param array $condition 筛选条件，数字为limit取几条，数组为筛选条件
-     * @param array $condExt
      * @param array $group 分组条件
      * @return array|null
      * @throws \Exception

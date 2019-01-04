@@ -55,6 +55,18 @@ return [
         'dsn'             => '',
         'params'          => [],
         'charset'         => 'utf8',
+        'prefix'          => 'wxa_',
+    ],
+    'data_wx' => [
+        'dbms'            => 'mysql',
+        'host'        => 'biserverha.ywdier.com',
+        'dbName'        => 'weixin_datacenter',
+        'user'        => 'dcweb',
+        'pass'        => 'TuYougame2018!',
+        'hostport'        => '3306',
+        'dsn'             => '',
+        'params'          => [],
+        'charset'         => 'utf8',
         'prefix'          => '',
     ]
 ];

@@ -38,15 +38,15 @@ class BaseController extends Controller implements BaseControllerInt
      * @throws \Exception
      */
     public function update(){
-        $this->success( $this->query->update( input('post') ) );
+        $param = input('put');
+        $this->success($this->query->update($param['where'],$param['data']));
     }
 
     /**
      * @throws \Exception
      */
     public function create(){
-        $param = input('put');
-        $this->success($this->query->insert($param['where'],$param['data']));
+        $this->success($this->query->insert(input('put')));
     }
 
     /**

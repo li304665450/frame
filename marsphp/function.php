@@ -129,7 +129,7 @@ function json($result,$httpCode)
  * @param int $httpCode http状态码
  * @return void
  */
-function apiResult(string $status, string $msg, array $data = [], int $httpCode = 200):void
+function apiResult(string $status, string $msg, $data = [], int $httpCode = 200):void
 {
     $result = [
         'status' => $status,
@@ -144,7 +144,8 @@ function apiResult(string $status, string $msg, array $data = [], int $httpCode 
  * @param string $name
  * @return mixed
  */
-function getName($name = 'controller'){
+function getName($name = 'controller')
+{
     return $GLOBALS[$name];
 }
 

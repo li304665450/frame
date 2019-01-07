@@ -9,7 +9,6 @@
 namespace app\index\controller;
 
 use app\common\controller\BaseController;
-use mars\DB\Query;
 
 class Index extends BaseController
 {
@@ -28,20 +27,6 @@ class Index extends BaseController
             ['text' => '222']
         ];
         $this->display($tpl);
-    }
-
-    public function test(){
-//        $start = time();
-//        for ($i = 0; $i < 10000; $i++) {
-//            $test = model('Test');
-//            $where = ['name' => 'Jack', 'age' => 44];
-//            $order = ['id' => 'desc', 'age' => 'desc'];
-//            $limit = [0, 3];
-//            $result = $test->get($where);
-//        }
-//        $end = time();
-//        deBug($end - $start);
-
     }
 
 }

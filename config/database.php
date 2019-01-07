@@ -33,10 +33,10 @@ return [
         // 数据库表前缀
         'prefix'          => '',
     ],
-    'default2' => [
+    'app' => [
         'dbms'            => 'mysql',
         'host'        => '127.0.0.1',
-        'dbName'        => 'app2',
+        'dbName'        => 'app',
         'user'        => 'root',
         'pass'        => 'li123456',
         'hostport'        => '3306',

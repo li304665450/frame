@@ -25,6 +25,30 @@ function require_dir(string $dir):array
 }
 
 /**
+ * 按规则加载目录下所有配置文件
+ * @param $path
+ * @return array
+ */
+function configPlant ($path) {
+
+    if (!is_dir($path)) return [];
+
+    $config_default = [];
+    $config_extend = [];
+    $file = require_dir($path);
+    foreach ($file as $key=>$item){
+        if (!is_dir($item)){
+            if ($key == 'config'){
+                $config_default = require_once $item;
+            }else{
+                $config_extend[$key] = require_once $item;
+            }
+        }
+    }
+    return array_merge($config_default,$config_extend);
+};
+
+/**
  * 获取配置信息
  * @param string|null $name 配置名以点间隔
  * @return mixed|string 配置信息数组

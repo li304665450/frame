@@ -8,9 +8,9 @@
 
 namespace app\index\controller;
 
-use app\common\controller\BaseController;
+use mars\Controller;
 
-class Index extends BaseController
+class Index extends Controller
 {
     protected $model = 'User';
 

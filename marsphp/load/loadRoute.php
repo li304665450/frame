@@ -17,6 +17,7 @@ if (config('route')[$route]){
 //拆分路由
 $param = explode('/', $route);
 
+//最终寻址路径大于四层，无法正常解析
 if (count($param) > 4)
     throw new \lib\exception\ApiException('非法URL',401);
 
@@ -44,12 +45,12 @@ $controllerClass = new $controllerName();
 if (!$controllerClass instanceof \mars\Controller)
     throw new \lib\exception\ApiException('非法控制器',402);
 
-//var_dump($_SERVER['REQUEST_METHOD']);
-//var_dump($action);
-//die();
-
 if (!method_exists($controllerClass, $action))
     throw new \lib\exception\ApiException('访问的方法不存在',404);
+
+//从外到内，加载本分组模块的配置
+$config = array_merge($config,configPlant(CONF_PATH.'/'.$group));
+$config = array_merge($config,configPlant(APP_PATH.'/'.$group.'/config'));
 
 //run
 $controllerClass->$action();

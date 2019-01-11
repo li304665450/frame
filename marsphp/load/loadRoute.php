@@ -40,6 +40,10 @@ if ($group == 'common')
 if (!class_exists($controllerName))
     throw new \lib\exception\ApiException('控制器不存在',404);
 
+//从外到内，加载本分组模块的配置
+$config = array_merge($config,configPlant(CONF_PATH.'/'.$group));
+$config = array_merge($config,configPlant(APP_PATH.'/'.$group.'/config'));
+
 $controllerClass = new $controllerName();
 
 if (!$controllerClass instanceof \mars\Controller)
@@ -47,10 +51,6 @@ if (!$controllerClass instanceof \mars\Controller)
 
 if (!method_exists($controllerClass, $action))
     throw new \lib\exception\ApiException('访问的方法不存在',404);
-
-//从外到内，加载本分组模块的配置
-$config = array_merge($config,configPlant(CONF_PATH.'/'.$group));
-$config = array_merge($config,configPlant(APP_PATH.'/'.$group.'/config'));
 
 //run
 $controllerClass->$action();

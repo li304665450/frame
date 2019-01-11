@@ -25,9 +25,9 @@ class BaseController extends Controller implements BaseControllerInt
      */
     public function fetchList(){
         $param = input('get');
-        $param['where'] = $param['where'] ?: [];
+//        $param['where'] = $param['where'] ?: [];
         $param['_limit'] = $this->doLimit($param['_limit']);
-        $this->success($this->model->get($param['where'], $param['order']));
+        $this->success($this->model->get($param, $param['order']));
     }
 
     public function getInfo(){

@@ -13,12 +13,14 @@ use mars\Controller;
 
 class QueryBaseController extends Controller implements BaseControllerInt
 {
-    public $database = 'default';
     public $query;
 
     public function __construct()
     {
-        $this->query = query($this->database,$this->getModelName());
+        $database = getName('group');
+        $database = config('model_default_database') ?: $database;
+        $database = $this->database ?: $database;
+        $this->query = query($database,$this->getModelName());
     }
 
     /**

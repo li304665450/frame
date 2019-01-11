@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: lilei
- * Date: 2018/11/30
- * Time: 4:08 PM
+ * Date: 2019/1/7
+ * Time: 10:51 AM
  */
 
 namespace app\common\controller;
@@ -11,13 +11,14 @@ namespace app\common\controller;
 
 use mars\Controller;
 
-class BaseController extends Controller implements BaseControllerInt
+class QueryBaseController extends Controller implements BaseControllerInt
 {
-    private $model;
+    public $database = 'default';
+    public $query;
 
     public function __construct()
     {
-        $this->model = model($this->getModelName());
+        $this->query = query($this->database,$this->getModelName());
     }
 
     /**
@@ -25,9 +26,8 @@ class BaseController extends Controller implements BaseControllerInt
      */
     public function fetchList(){
         $param = input('get');
-        $param['where'] = $param['where'] ?: [];
         $param['_limit'] = $this->doLimit($param['_limit']);
-        $this->success($this->model->get($param['where'], $param['order']));
+        $this->success($this->query->get($param));
     }
 
     public function getInfo(){
@@ -39,27 +39,26 @@ class BaseController extends Controller implements BaseControllerInt
      */
     public function update(){
         $param = input('put');
-        $this->success($this->model->update($param['where'],$param['data']));
+        $this->success($this->query->update($param['where'],$param['data']));
     }
 
     /**
      * @throws \Exception
      */
     public function create(){
-        $this->success($this->model->insert(input('put')));
+        $this->success($this->query->insert(input('put')));
     }
 
     /**
      * @throws \Exception
      */
     public function delete(){
-        $this->success( $this->model->delete( input('delete') ) );
+        $this->success( $this->query->delete( input('delete') ) );
     }
 
     public function options()
     {
         $this->success('Opinons success');
     }
-
 
 }

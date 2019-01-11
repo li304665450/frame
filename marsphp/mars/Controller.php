@@ -11,6 +11,8 @@ namespace mars;
 
 class Controller
 {
+    public $modelName;
+
     /**
      * html页面加载方法
      * @param $tpl
@@ -95,11 +97,25 @@ class Controller
     }
 
     /**
-     * 获取当前控制器名称
-     * @return string
+     * 外部的limit条件转为内部形式
+     * @param $limit
+     * @return array
      */
-    protected function Controller(){
-        return ucfirst(getName('controller'));
+    public function doLimit($limit){
+
+        if (!$limit)
+            return [];
+
+        $start = ($limit['page'] -1) * $limit['size'];
+        return [$start,$limit['size']];
+    }
+
+    /**
+     * 获取当前控制器名称
+     * @return mixed
+     */
+    protected function getModelName(){
+        return $this->modelName ?: getName('controller');
     }
 
 }

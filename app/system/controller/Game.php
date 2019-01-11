@@ -56,7 +56,7 @@ class Game extends BaseController
     public function getTree()
     {
         try {
-            $list = model('game')->get(['status1' => 1], ['pid']);
+            $list = model('game')->get(['status' => 1], ['pid']);
         } catch (\Exception $e) {
             throw $e;
         }

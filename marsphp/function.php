@@ -123,13 +123,13 @@ function json($result,$httpCode)
 
 /**
  * api接口回调消息封装方法
- * @param string $status 业务状态码
+ * @param int $status 业务状态码
  * @param string $msg 提示信息
  * @param array $data 数据
  * @param int $httpCode http状态码
  * @return void
  */
-function apiResult(string $status, string $msg, $data = [], int $httpCode = 200):void
+function apiResult(int $status, string $msg, $data = [], int $httpCode = 200):void
 {
     $result = [
         'status' => $status,

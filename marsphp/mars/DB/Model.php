@@ -26,7 +26,7 @@ class Model
     {
         $database = getName('group');
         $database = config('model_default_database') ?: $database;
-        $database = $ff?: $database;
+        $database = $this->database ?: $database;
         $path_arr = explode('\\',get_called_class());
         $table = $this->table ?: Unit::humpToLine(end($path_arr),'_');
         $this->query = new Query($database,$table,$this->otherDB);

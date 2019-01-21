@@ -48,6 +48,14 @@ class {$name} extends BaseController
 }
 eof;
 
+    $fp = fopen($controller,'w');
+    if (!fwrite($fp,$controller_content)){
+        echo 'controller write field';
+    }
+    fclose($fp);
+
+    exec("chmod 777 ".$controller);
+
     $model_content = <<<eof
 <?php
 
@@ -61,6 +69,14 @@ class {$name} extends Model
 
 }
 eof;
+
+    $fp = fopen($model,'w');
+    if (!fwrite($fp,$model_content)){
+        echo 'controller write field';
+    }
+    fclose($fp);
+
+    exec("chmod 777 ".$controller);
 
 }
 

@@ -11,8 +11,6 @@ return [
     'error_message'             => '系统错误！请稍后再试～',
     // 显示错误信息
     'show_error_msg'            => 0,
-    //model默认数据库配置
-    'model_default_database'    => 'default',
     //restful接口请求方法map
     'restful_method_action'    => [
         'GET'     => 'fetchList',

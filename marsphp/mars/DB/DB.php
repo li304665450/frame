@@ -55,6 +55,7 @@ class DB
 
     /**
      * 连接数据库
+     * @throws ApiException
      */
     public function connet(){
         try {

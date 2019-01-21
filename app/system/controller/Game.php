@@ -116,10 +116,6 @@ class Game extends BaseController
 
         unset($param['update_time']);
 
-        try {
-            $this->success(model('game')->updateById($param['id'], $param));
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        $this->success(model('game')->updateById($param['id'], $param));
     }
 }

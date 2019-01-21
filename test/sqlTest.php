@@ -9,6 +9,9 @@ $result = [
 
 function select($query){
     $query->select([
+        '_select' => [
+
+        ],
         'name' => 'Jack',
         'day' => [
             '>' => '2018-12-20',

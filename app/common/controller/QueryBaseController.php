@@ -40,7 +40,7 @@ class QueryBaseController extends Controller implements BaseControllerInt
      * @throws \Exception
      */
     public function update(){
-        $param = input('put');
+        $param = input('post');
         $this->success($this->query->update($param['where'],$param['data']));
     }
 

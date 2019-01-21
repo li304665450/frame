@@ -20,24 +20,27 @@ class Model
     public $db = '';               //DB操作对象
     public $query = '';            //sql操作对象
     public $field = '';           //查询字段，默认所有字段
+    public $dictionaries;
 
     public function __construct()
     {
         $database = getName('group');
         $database = config('model_default_database') ?: $database;
-        $database = $this->database ?: $database;
+        $database = $ff?: $database;
         $path_arr = explode('\\',get_called_class());
         $table = $this->table ?: Unit::humpToLine(end($path_arr),'_');
         $this->query = new Query($database,$table,$this->otherDB);
     }
 
     /**
-     * 设置需要查询的字段
-     * @param string $field
+     * 设置字段的字典映射
+     * @param string $field 字段
+     * @param array $dic 映射数组
      */
-    public function setField($field)
+    public function setDic($field = '', $dic = [])
     {
-        $this->field = $field;
+        if (!empty($field) && !empty($dic))
+            $this->dictionaries[$field] = $dic;
     }
 
     /**
@@ -66,8 +69,28 @@ class Model
         $this->field && $condition['_select'] = $this->field;
         $select && $condition['_select'] = $select;
 
-        return $this->query->get($condition);
+        return  $this->saveDic($this->query->get($condition));
+    }
 
+    /**
+     * 将结果集数据中有数据字典到字段
+     * 进行字典映射
+     * @param array $list 结果集合
+     * @return array 转化后到结果数组
+     */
+    private function saveDic($list = []){
+
+        if (empty($list)) return $list;
+
+        foreach ($list as &$value){
+            foreach ($value as $k=>&$v){
+                if ($this->dictionaries[$k]){
+                    $v = $this->dictionaries[$k][$v] ?: $v;
+                }
+            }
+        }
+
+        return $list;
     }
 
     /**

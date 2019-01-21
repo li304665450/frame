@@ -33,7 +33,10 @@ eof;
     exec("chmod 777 ".$controller);
 
 }else{
+    //创建model文件夹
     !is_dir($group."/model") && mkdir($group."/model");
+
+    //写入控制器
     $controller_content = <<<eof
 <?php
 
@@ -56,6 +59,7 @@ eof;
 
     exec("chmod 777 ".$controller);
 
+    //写入模型类
     $model_content = <<<eof
 <?php
 
